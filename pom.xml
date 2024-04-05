@@ -31,7 +31,6 @@
     <connection>scm:git:git://github.com/apiaddicts/dosonarapi.git</connection>
     <developerConnection>scm:git:ssh://github.com:apiaddicts/dosonarapi.git</developerConnection>
     <url>https://github.com/apiaddicts/dosonarapi/tree/master</url>
-    <tag>dosonarapi-1.1.0</tag>
   </scm>
 
   <distributionManagement>

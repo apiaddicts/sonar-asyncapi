@@ -29,7 +29,7 @@
 
   <scm>
     <connection>scm:git:git://github.com/apiaddicts/dosonarapi.git</connection>
-    <developerConnection>scm:git:ssh://github.com:apiaddicts/dosonarapi.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:apiaddicts/dosonarapi.git</developerConnection>
     <url>https://github.com/apiaddicts/dosonarapi/tree/master</url>
   </scm>
 

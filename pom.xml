@@ -55,7 +55,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <license.title>doSonarAPI: SonarQube OpenAPI Plugin</license.title>
+    <license.title>doSonarAPI: SonarQube AsyncAPI Plugin</license.title>
     <license.owner>Apiaddicts</license.owner>
     <license.mailto>contacta AT apiaddicts DOT org</license.mailto>
     <license.years>${project.inceptionYear}-2022</license.years>

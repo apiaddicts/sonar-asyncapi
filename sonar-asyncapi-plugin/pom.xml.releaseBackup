@@ -9,12 +9,12 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>sonar-openapi-plugin</artifactId>
+  <artifactId>sonar-asyncapi-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
 
-  <name>OpenAPI :: Sonar Plugin</name>
+  <name>AsyncAPI :: Sonar Plugin</name>
   <!-- Be careful when altering <description> as its value shows up in the SonarQube GUI -->
-  <description>Code Analyzer for OpenAPI</description>
+  <description>Code Analyzer for AsyncAPI</description>
 
   <dependencies>
     <dependency>
@@ -23,12 +23,12 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>openapi-front-end</artifactId>
+      <artifactId>asyncapi-front-end</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>openapi-checks</artifactId>
+      <artifactId>asyncapi-checks</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -59,7 +59,7 @@
         <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
         <configuration>
-          <pluginName>SonarOpenApi</pluginName>
+          <pluginName>SonarAsyncApi</pluginName>
           <pluginClass>${sonar.pluginClass}</pluginClass>
           <skipDependenciesPackaging>true</skipDependenciesPackaging>
           <sonarLintSupported>true</sonarLintSupported>

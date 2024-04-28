@@ -9,14 +9,14 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>openapi-checks</artifactId>
+  <artifactId>asyncapi-checks</artifactId>
 
-  <name>OpenAPI :: Checks</name>
+  <name>AsyncAPI :: Checks</name>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>openapi-front-end</artifactId>
+      <artifactId>asyncapi-front-end</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -39,7 +39,7 @@
     <!-- test dependencies -->
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>openapi-test-tools</artifactId>
+      <artifactId>asyncapi-test-tools</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

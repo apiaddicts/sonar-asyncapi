@@ -9,9 +9,9 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>openapi-front-end</artifactId>
+  <artifactId>asyncapi-front-end</artifactId>
 
-  <name>OpenAPI :: Front-end</name>
+  <name>AsyncAPI :: Front-end</name>
 
   <dependencies>
     <dependency>

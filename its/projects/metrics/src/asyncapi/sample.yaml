@@ -1,0 +1,25 @@
+#
+# Some header
+#
+asyncapi: '2.3.0'
+info:
+  title: Simple Petstore Events
+  version: '1.0.0'
+  description: hola
+servers:
+  default:
+    url: localhost:5000
+    protocol: ws
+channels:
+  petListRequested:
+    subscribe:
+      summary: client requests the list of pets
+      message:
+        name: petListRequest
+        payload:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              description: Time when the request was made

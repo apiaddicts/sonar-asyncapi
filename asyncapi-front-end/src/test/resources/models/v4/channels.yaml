@@ -1,0 +1,21 @@
+pets:
+  description: Channel for pet related events
+  publish:
+    summary: Inform subscribers about pets the user has access to
+    operationId: listPets
+    message:
+      contentType: application/json
+      name: PetsListedEvent
+      payload:
+        type: array
+        items:
+          $ref: "#/components/schemas/Pet"
+      examples:
+        - summary: Pets list example
+          value:
+            - id: 1
+              name: Whiskers
+              type: Cat
+            - id: 2
+              name: Rex
+              type: Dog

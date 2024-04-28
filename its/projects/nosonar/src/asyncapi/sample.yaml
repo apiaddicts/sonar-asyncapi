@@ -1,0 +1,28 @@
+#
+# Some header
+#
+asyncapi: '2.3.0'
+info:
+  title: Swagger Petstore Events
+  version: '1.0.0'
+  description: this service emits events related to operations on pets.
+servers:
+  default:
+    url: localhost:5000
+    protocol: ws
+channels:
+  petListRetrieved:
+    subscribe:
+      summary: notifies when a client retrieves the list of all pets
+      message:
+        name: petListRetrievedEvent
+        payload:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              description: The timestamp when the pet list was retrieved
+            count:
+              type: integer
+              description: Number of pets retrieved

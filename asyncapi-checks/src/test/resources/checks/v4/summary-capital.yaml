@@ -1,0 +1,30 @@
+asyncapi: '2.3.0'
+info:
+  title: Swagger Petstore Events
+  version: '1.0.0'
+  description: |
+    This service publishes events related to pets in the petstore.
+servers:
+  production:
+    url: broker.mycompany.com
+    protocol: mqtt
+channels:
+  petCreated:
+    description: An event is emitted when a new pet is added to the petstore.
+    publish:
+      summary: inform subscribers a new pet has been added  # Noncompliant {{Summaries must start with a capital letter.}}
+      message:
+        contentType: application/json
+        name: PetCreatedEvent
+        payload:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Unique identifier for the pet
+            name:
+              type: string
+              description: Name of the pet
+            tag:
+              type: string
+              description: Tag associated with the pet

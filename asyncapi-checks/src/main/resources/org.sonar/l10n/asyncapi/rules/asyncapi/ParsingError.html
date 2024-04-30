@@ -1,0 +1,30 @@
+<p>
+    The description in 'info' should start with a capital letter.
+    </p>
+    
+<h2>Noncompliant Code Example (AsyncAPI)</h2>
+<pre>
+asyncapi: '2.3.0'
+info:
+  title: Swagger Petstore Events
+  version: '1.0.0'
+  description: esta es una descripción que no comienza con mayúscula 
+servers:
+  production:
+    url: broker.mycompany.com
+    protocol: mqtt
+channels: {}
+</pre>
+
+<h2>Compliant Solution (AsyncAPI)</h2>
+<pre>
+asyncapi: '2.3.0'
+info:
+  title: Swagger Petstore Events
+  version: '1.0.0'
+  description: Esta es una descripción que comienza con mayúscula 
+  production:
+    url: broker.mycompany.com
+    protocol: mqtt
+channels: {}
+</pre>

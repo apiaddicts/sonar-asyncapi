@@ -1,5 +1,5 @@
 /*
- * doSonarAPI: SonarQube AsyncAPI Plugin
+ * doSonarAPI: SonarQube OpenAPI Plugin
  * Copyright (C) 2021-2022 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
@@ -17,7 +17,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-
 /**
  * A file being parsed by the scanner.
  */

@@ -73,16 +73,16 @@ public class AsyncApiAnalyzer {
   }
 
   public void scanFiles() {
-    for (InputFile openApiFile : inputFiles) {
+    for (InputFile asyncApiFile : inputFiles) {
       if (context.isCancelled()) {
         return;
       }
-      scanFile(openApiFile);
+      scanFile(asyncApiFile);
     }
   }
 
   private void scanFile(InputFile inputFile) {
-    AsyncApiFile asyncApiFile = SonarQubeAsyncApiFile.create(inputFile); // Changed variable name from openApiFile to asyncApiFile
+    AsyncApiFile asyncApiFile = SonarQubeAsyncApiFile.create(inputFile); 
     AsyncApiVisitorContext visitorContext;
     YamlParser targetParser = null;
     try {

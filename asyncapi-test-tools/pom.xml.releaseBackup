@@ -9,14 +9,14 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>openapi-test-tools</artifactId>
+  <artifactId>asyncapi-test-tools</artifactId>
 
-  <name>OpenAPI :: Test tools</name>
+  <name>AsyncAPI :: Test tools</name>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>openapi-front-end</artifactId>
+      <artifactId>asyncapi-front-end</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

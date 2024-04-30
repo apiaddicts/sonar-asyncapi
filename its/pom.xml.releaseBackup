@@ -10,8 +10,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>openapi-its</artifactId>
-    <name>OpenAPI :: Integration Tests</name>
+    <artifactId>asyncapi-its</artifactId>
+    <name>AsyncAPI :: Integration Tests</name>
     <inceptionYear>2021</inceptionYear>
 
     <properties>
@@ -50,7 +50,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <configuration>
                         <includes>
-                            <include>org/sonar/openapi/it/plugin/Tests.java</include>
+                            <include>org/sonar/asyncapi/it/plugin/Tests.java</include>
                         </includes>
                     </configuration>
                 </plugin>
@@ -81,13 +81,13 @@
                                     <artifactItems>
                                         <artifactItem>
                                             <groupId>${project.groupId}</groupId>
-                                            <artifactId>sonar-openapi-plugin</artifactId>
+                                            <artifactId>sonar-asyncapi-plugin</artifactId>
                                             <version>${project.version}</version>
                                             <type>sonar-plugin</type>
                                             <overWrite>true</overWrite>
                                         </artifactItem>
                                     </artifactItems>
-                                    <outputDirectory>../sonar-openapi-plugin/target</outputDirectory>
+                                    <outputDirectory>../sonar-asyncapi-plugin/target</outputDirectory>
                                     <overWriteReleases>true</overWriteReleases>
                                     <overWriteSnapshots>true</overWriteSnapshots>
                                 </configuration>

@@ -1,0 +1,66 @@
+asyncapi: '2.1.0'
+info:
+  title: Example API
+  version: '1.0.0'
+  description: This is a sample server for a pet store.
+servers:
+  production:
+    url: broker.mycompany.com/{environment}
+    protocol: mqtt
+    variables:
+      environment:
+        default: production
+        description: Set to either 'production' or 'sandbox' to connect to the respective environment.
+
+channels:
+  'pets':
+    subscribe:
+      operationId: listPets
+      summary: Inform about pets added to the store
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            name:
+              type: string
+            tag:
+              type: string
+  'animals/{animalId}/name':
+    subscribe:
+      operationId: getAnimalName
+      summary: Receive updates for an animal's name
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            name:
+              type: string
+  # Ambiguity: the channel below might be considered ambiguous or masking with 'pets/{petId}'
+  'pets/{petId}':
+    subscribe:
+      operationId: getPetDetails
+      summary: Receive details for a specific pet
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+  'pets/1234':
+    subscribe:
+      operationId: getPetByID
+      summary: Specific pet details for pet with ID 1234
+      message:
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            name:
+              type: string
+            type:
+              type: string

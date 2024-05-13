@@ -1,7 +1,13 @@
-openapi: "3.0.0"
+asyncapi: '2.1.0'
 info:
-  title: Swagger Petstore
-paths:
-  /pets/1234:
-    post:
-      description: some description
+  title: Example Messaging API
+channels:
+  'user/signedup':
+    subscribe:
+      message:
+        contentType: 'application/json'
+        payload:
+          type: object
+          properties:
+            name:
+              type: string

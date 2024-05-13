@@ -1,30 +1,33 @@
-openapi: "3.0.1"
+asyncapi: '2.1.0'
 info:
-  version: 1.0.0
-  title: Swagger Petstore
-paths:
-  /pets/{petId}:
-    get:
-      responses:
-        '200':
-          description: success
-          content:
-            'application/json':
-              schema:
-                # this should rather be an object with a "pets" array property
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-  /pets/1234:
-    get:
-      responses:
-        '200':
-          description: success
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/Pet'
+  title: Example Messaging API
+  version: '1.0.0'
+channels:
+  'pets/{petId}':
+    subscribe:
+      operationId: getPetsDetails
+      message:
+        contentType: 'application/json'
+        payload:
+          type: object
+          properties:
+            petId:
+              type: string
+            status:
+              description: 'Details of the pet requested'
+  'pets/1234':
+    subscribe:
+      operationId: getSpecificPetDetails
+      message:
+        contentType: 'application/json'
+        payload:
+          $ref: '#/components/schemas/Pet'
 components:
   schemas:
     Pet:
       type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string

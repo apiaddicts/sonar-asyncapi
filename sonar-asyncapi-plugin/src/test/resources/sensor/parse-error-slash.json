@@ -1,75 +1,51 @@
 [
   {
-    "provider_name": "Vimeo",
-    "provider_url": "https:\/\/vimeo.com\/",
-    "endpoints": [
+    "channel_name": "vimeoEvents",
+    "channel_description": "Events related to Vimeo channel activities.",
+    "operations": [
       {
-        "schemes": [
-          "https:\/\/vimeo.com\/*",
-          "https:\/\/vimeo.com\/album\/*\/video\/*",
-          "https:\/\/vimeo.com\/channels\/*\/*",
-          "https:\/\/vimeo.com\/groups\/*\/videos\/*",
-          "https:\/\/vimeo.com\/ondemand\/*\/*",
-          "https:\/\/player.vimeo.com\/video\/*"
-        ],
-        "url": "https:\/\/vimeo.com\/api\/oembed.{format}",
-        "discovery": true
+        "operation_type": "subscribe",
+        "description": "Subscribe to Vimeo updates."
       }
     ]
   },
   {
-    "provider_name": "Twitter",
-    "provider_url": "http:\/\/www.twitter.com\/",
-    "endpoints": [
+    "channel_name": "twitterFeed",
+    "channel_description": "Twitter feed updates.",
+    "operations": [
       {
-        "schemes": [
-          "https:\/\/twitter.com\/*\/status\/*",
-          "https:\/\/*.twitter.com\/*\/status\/*"
-        ],
-        "url": "https:\/\/publish.twitter.com\/oembed"
-
+        "operation_type": "subscribe",
+        "description": "Receive tweets as they are published."
       }
     ]
   },
   {
-    "provider_name": "CollegeHumor",
-    "provider_url": "http:\/\/www.collegehumor.com\/",
-    "endpoints": [
+    "channel_name": "collegeHumorEvents",
+    "channel_description": "College Humor video events.",
+    "operations": [
       {
-        "schemes": [
-          "http:\/\/www.collegehumor.com\/video\/*"
-        ],
-        "url": "http:\/\/www.collegehumor.com\/oembed.{format}",
-        "discovery": true
+        "operation_type": "subscribe",
+        "description": "Updates when new videos are posted."
       }
     ]
   },
   {
-    "provider_name": "Flickr",
-    "provider_url": "http:\/\/www.flickr.com\/",
-    "endpoints": [
+    "channel_name": "flickrPhotos",
+    "channel_description": "Photo updates from Flickr.",
+    "operations": [
       {
-        "schemes": [
-          "http:\/\/*.flickr.com\/photos\/*",
-          "http:\/\/flic.kr\/p\/*"
-        ],
-        "url": "http:\/\/www.flickr.com\/services\/oembed\/",
-        "discovery": true
+        "operation_type": "subscribe",
+        "description": "Get notifications for new photos."
       }
     ]
   },
   {
-    "provider_name": "YouTube",
-    "provider_url": "https://www.youtube.com/",
-    "endpoints": [
+    "channel_name": "youtubeVideos",
+    "channel_description": "Updates on new YouTube videos.",
+    "operations": [
       {
-        "schemes": [
-          "https://*.youtube.com/watch*",
-          "https://*.youtube.com/v/*\"",
-          "https://youtu.be/*"
-        ],
-        "url": "https://www.youtube.com/oembed",
-        "discovery": true
+        "operation_type": "subscribe",
+        "description": "Receive updates when new videos are uploaded."
       }
     ]
   }

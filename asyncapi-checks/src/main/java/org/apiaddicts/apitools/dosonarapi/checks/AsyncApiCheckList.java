@@ -33,7 +33,8 @@ public final class AsyncApiCheckList {
       ChannelMaskingCheck.class,
       AsyncApiParsingErrorCheck.class,
       SummaryCapitalCheck.class,
-      InfoDescriptionFormatCheck.class
+      InfoDescriptionFormatCheck.class,
+      ChannelAmbiguityCheck.class
           );
   }
 }

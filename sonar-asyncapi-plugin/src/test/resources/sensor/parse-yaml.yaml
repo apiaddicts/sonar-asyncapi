@@ -1,51 +1,52 @@
-openapi: "3.0.0"
+asyncapi: '2.1.0'
 info:
   title: Test api
   description: Test api
   version: v1
 
-tags:
-  - name: Test
-    description: 'Test tag'
-
-paths:
-  /test/one:
-    get:
+channels:
+  test/one:
+    subscribe:
       summary: Test one.
-      description: Test one.
       operationId: testOne
-      tags:
-        - Test
-      responses:
-        '200':
-          $ref: '#/components/responses/okResponse'
-        default:
-          $ref: '#/components/responses/unexpectedErrorResponse'
+      message:
+        contentType: 'application/json'
+        payload:
+          description: |
+            This is a simple message description.
+          $ref: '#/components/messages/okMessage'
 
   # Test comment
-  /test/two:
-    get:
+  test/two:
+    subscribe:
       summary: Test two.
-      description: |
-       This is a complex
-       multiline description
-
-
-       with blank lines
-       and other things
       operationId: testTwo
-      tags:
-        - Test
-      responses:
-        '200':
-          $ref: '#/components/responses/okResponse'
-        default:
-          $ref: '#/components/responses/unexpectedErrorResponse'
+      message:
+        contentType: 'application/json'
+        payload:
+          description: |
+            This is a complex
+            multiline description
+
+            with blank lines
+            and other things
+          $ref: '#/components/messages/okMessage'
 
 components:
-
-  responses:
-    okResponse:
-      description: Ok
-    unexpectedErrorResponse:
-      description: Unexpected error
+  messages:
+    okMessage:
+      contentType: 'application/json'
+      payload:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Ok
+    unexpectedErrorMessage:
+      contentType: 'application/json'
+      payload:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Unexpected error

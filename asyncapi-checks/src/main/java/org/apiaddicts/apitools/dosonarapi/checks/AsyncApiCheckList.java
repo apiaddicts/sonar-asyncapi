@@ -30,7 +30,6 @@ public final class AsyncApiCheckList {
 
   public static List<Class<?>> getChecks() {
     return Arrays.asList(
-      ChannelMaskingCheck.class,
       AsyncApiParsingErrorCheck.class,
       SummaryCapitalCheck.class,
       InfoDescriptionFormatCheck.class,

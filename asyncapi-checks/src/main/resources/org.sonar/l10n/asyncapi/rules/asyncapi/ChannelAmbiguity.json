@@ -1,5 +1,5 @@
 {
-  "title": "Paths SHOULD NOT mask each other or be ambiguous",
+  "title": "Channels SHOULD NOT be ambiguous",
   "type": "BUG",
   "status": "ready",
   "remediation": {
@@ -12,6 +12,6 @@
     "should"
   ],
   "defaultSeverity": "Major",
-  "ruleSpecification": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#path-templating-matching",
-  "sqKey": "PathMaskerading"
+  "ruleSpecification": "",
+  "sqKey": "ChannelAmbiguity"
 }

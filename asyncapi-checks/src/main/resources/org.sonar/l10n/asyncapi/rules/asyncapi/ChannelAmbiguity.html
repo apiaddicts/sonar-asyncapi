@@ -1,31 +1,24 @@
-<p>The AsyncAPI specification allows for templating of paths. While this is a powerful tool to capture parameters in
-a route's path, it can lead to ambiguous or masking path definitions. For a given path root, pay attention to not
-defined more that one templated segment. Also avoid defining both a templated segment and a non-templated segment
-for the same path root.</p>
+<p>The AsyncAPI specification allows for the definition of channels which are central to the interaction patterns in event-driven architectures. While using channels with parameters (templating) provides powerful ways to capture specific aspects or entities in an event's path, it can also lead to ambiguous or masking channel definitions. When defining channels, ensure that each channel is uniquely identifiable and avoid overlapping or duplicative channel definitions that could confuse subscribers or publishers.</p>
 
-<h2>Noncompliant Code Example</h2>
-<p>In this example, the <tt>{transactionId}</tt> segment is always being masked by the non-templated <tt>purge</tt>
-    segment. The first route will never be invoked.</p>
+<h2>Noncompliant Channel Example</h2>
+<p>In this example, the <tt>{userId}</tt> parameter in the first channel might be overshadowed by the more specific <tt>system</tt> parameter in the second channel. This can lead to confusion or the first channel never being subscribed to:</p>
 <pre>
-/v1/transactions/{transactionId}
-/v1/transactions/purge
+/user/{userId}/events
+/user/system/events
 </pre>
 
-<p>In this example, both paths are templated, leading to undefined behaviour. Depending on the server's implementation,
-one route may never be called.</p>
+<p>In this example, both channels use templated segments that could lead to conflicts depending on how they are interpreted by the subscribing or publishing application:</p>
 <pre>
-/v1/{server}/destroy
-/v1/{transaction}/destroy
+/device/{deviceId}/setup
+/device/{setupId}/setup
 </pre>
 
 <h2>Compliant Solution</h2>
-
-<p>Define your paths in a non-ambiguous way, so that they don't collide.</p>
+<p>Define your channels in a non-ambiguous way, ensuring that each channel clearly describes its purpose and context, minimizing the risk of overlap:</p>
 <pre>
-/v1/transactions/{transactionId}
-/v1/transactions/{transactionId}/purge
+/users/{userId}/events
+/systems/{systemId}/events
 
-/v1/servers/{server}/destroy
-/v1/transactions/{transaction}/destroy
+/devices/{deviceId}/setup
+/setups/{setupId}/configuration
 </pre>
-

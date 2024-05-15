@@ -1,21 +1,15 @@
-pets:
-  description: Channel for pet related events
+myChannel:
+  description: A simple channel description
   publish:
-    summary: Inform subscribers about pets the user has access to
-    operationId: listPets
+    operationId: publishOperation
+    summary: publish summary
+    description: publish description
     message:
-      contentType: application/json
-      name: PetsListedEvent
+      description: Message description
       payload:
-        type: array
-        items:
-          $ref: "#/components/schemas/Pet"
-      examples:
-        - summary: Pets list example
-          value:
-            - id: 1
-              name: Whiskers
-              type: Cat
-            - id: 2
-              name: Rex
-              type: Dog
+        type: object
+        properties:
+          name:
+            type: string
+          age:
+            type: integer

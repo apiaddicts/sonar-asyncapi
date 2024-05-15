@@ -37,7 +37,7 @@ public class ChannelAmbiguityCheckTest {
 
   @Test
   public void verify_channel_ambiguity() {
-    AsyncApiCheckVerifier.verify("src/test/resources/checks/asyncapi-channel-ambiguity.yaml", new ChannelAmbiguityCheck());
+    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/channel-ambiguity.yaml", new ChannelAmbiguityCheck());
   }
 
   @Test

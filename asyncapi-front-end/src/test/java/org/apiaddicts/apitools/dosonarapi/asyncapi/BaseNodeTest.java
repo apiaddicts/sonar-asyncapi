@@ -109,16 +109,21 @@ public abstract class BaseNodeTest<T> {
 
   private YamlGrammarBuilder makeGrammar(Class<?> modelClass) {
     for (Method method : modelClass.getMethods()) {
-      if (isStatic(method.getModifiers()) && method.getName().equals("create")) {
-        try {
-          return (YamlGrammarBuilder) method.invoke(null);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-          throw new IllegalArgumentException(e);
+        if (isStatic(method.getModifiers()) && method.getName().equals("create")) {
+            try {
+                return (YamlGrammarBuilder) method.invoke(null);
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException("Error accessing create method on " + modelClass.getName() + ": " + e.getMessage(), e);
+            } catch (InvocationTargetException e) {
+                Throwable cause = e.getCause();
+                throw new IllegalArgumentException("Error invoking create method on " + modelClass.getName() + ": " + (cause != null ? cause.getMessage() : "null"), cause);
+            }
         }
-      }
     }
     throw new IllegalArgumentException("No static create() method found in class \"" + modelClass + "\"");
-  }
+}
+
+
 
   private YamlParser makeGrammarFor(GrammarRuleKey root) {
     YamlGrammarBuilder grammar = makeGrammar(modelClass);
@@ -129,13 +134,20 @@ public abstract class BaseNodeTest<T> {
   protected final JsonNode parseResource(GrammarRuleKey root, String path) {
     URL resource = BaseNodeTest.class.getResource(path);
     if (null == resource) {
-      throw new IllegalArgumentException("Cannot load test resource <" + path + ">, please check test code.");
+        throw new IllegalArgumentException("Cannot load test resource <" + path + ">, please check test code.");
     }
-    YamlParser parser = makeGrammarFor(root);
+    YamlParser parser;
+    try {
+        parser = makeGrammarFor(root);
+    } catch (Exception e) {
+        throw new IllegalArgumentException("Error creating grammar for root: " + root + ", due to: " + e.getMessage(), e);
+    }
     JsonNode parsed = parser.parse(new File(resource.getFile()));
     this.issues = parser.getIssues();
     return parsed;
-  }
+}
+
+
 
   protected final JsonNode parseText(GrammarRuleKey root, String text) {
     YamlParser parser = makeGrammarFor(root);

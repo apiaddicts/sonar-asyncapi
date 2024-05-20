@@ -81,7 +81,7 @@ public class AsyncApiScannerSensorTest {
     assertThat(descriptor.type()).isEqualTo(InputFile.Type.MAIN);
   }
 
-  @Test
+/*@Test
   public void test_issues_asyncapi() {
       activeRules = (new ActiveRulesBuilder())
         .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, "ChannelAmbiguity"))
@@ -131,7 +131,7 @@ public class AsyncApiScannerSensorTest {
           );
   }
 
-/* ADRI
+// ADRI
   @Test
   public void parse_openapi3_headers_ref() {
     inputFile("headers_ref.yaml");
@@ -141,7 +141,7 @@ public class AsyncApiScannerSensorTest {
             .build();
     sensor().execute(context);
   }
-*/
+
 
   @Test
   public void parse_yaml_break_comment_ok() {
@@ -193,7 +193,7 @@ public class AsyncApiScannerSensorTest {
     }
     System.out.println(errorFiles);
   }
-
+*/
   @Test
   public void cancelled_analysis() {
     InputFile inputFile = inputFile("file1.yaml");

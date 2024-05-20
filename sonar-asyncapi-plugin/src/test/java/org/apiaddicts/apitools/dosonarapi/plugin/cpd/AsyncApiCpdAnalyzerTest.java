@@ -47,12 +47,12 @@ public class AsyncApiCpdAnalyzerTest {
 
   @Test
   public void can_collect_tokens() {
-    DefaultInputFile inputFile = inputFile("cpdasyncapi.yaml");
+    DefaultInputFile inputFile = inputFile("cpd.yaml");
     AsyncApiVisitorContext visitorContext = TestAsyncApiVisitorRunner.createContext(inputFile.path().toFile());
     cpdAnalyzer.pushCpdTokens(inputFile, visitorContext);
 
-    List<TokensLine> lines = context.cpdTokens("moduleKey:cpdasyncapi.yaml");
-    assertThat(lines).hasSize(6);
+    List<TokensLine> lines = context.cpdTokens("moduleKey:cpd.yaml");
+    assertThat(lines).hasSize(9);
     TokensLine line1 = lines.get(0);
     assertThat(line1.getStartLine()).isEqualTo(1);
     assertThat(line1.getEndLine()).isEqualTo(1);
@@ -60,12 +60,15 @@ public class AsyncApiCpdAnalyzerTest {
     assertThat(line1.getEndUnit()).isEqualTo(3);
     List<String> values = lines.stream().map(TokensLine::getValue).collect(Collectors.toList());
     assertThat(values).containsExactly(
-        "asyncapi:2.3.0",
+        "asyncapi:2.0.0",
         "info:",
         "version:1.0.0",
-        "title:Swagger Petstore",
+        "title:AsyncAPI Petstore",
+        "servers:",
+        "-url:ws://petstore.swagger.io/v1",
+        "protocol:amqp",
         "channels:",
-        "petCreated:{}");
+        "/pets:{}");
   }
 
   private DefaultInputFile inputFile(String fileName) {

@@ -19,14 +19,12 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     EXTERNAL_DOC,
     CONTACT,
     LICENSE,
-
     OPERATION,
     LINK,
     CALLBACK,
     CALLBACKS,
     RESPONSES,
     REQUEST_BODY,
-
     SCHEMA,
     DISCRIMINATOR,
     HEADER,
@@ -57,14 +55,27 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     CALLBACKS_COMPONENT,
     SCHEMA_PROPERTIES,
     DESCRIPTION,
-
-    CHANNELS, CHANNEL_ITEM,
-    MESSAGE, MESSAGES, MESSAGE_TRAIT, MESSAGE_BINDING, MESSAGES_COMPONENT, MESSAGE_EXAMPLE,
-    OPERATION_TRAIT, OPERATION_BINDING,
-    SERVER_BINDINGS, CHANNEL_BINDINGS, MESSAGE_BINDINGS, OPERATION_BINDINGS, SCHEMA_BINDINGS,
-    SERVER_BINDING, CHANNEL_BINDING,
-    CORRELATION_ID, BINDING_DEFINITION,
-    HEADERS_SCHEMA, PAYLOAD_SCHEMA;
+    CHANNELS,
+    CHANNEL_ITEM,
+    MESSAGE,
+    MESSAGES,
+    MESSAGE_TRAIT,
+    MESSAGE_BINDING,
+    MESSAGES_COMPONENT,
+    MESSAGE_EXAMPLE,
+    OPERATION_TRAIT,
+    OPERATION_BINDING,
+    SERVER_BINDINGS,
+    CHANNEL_BINDINGS,
+    MESSAGE_BINDINGS,
+    OPERATION_BINDINGS,
+    SCHEMA_BINDINGS,
+    SERVER_BINDING,
+    CHANNEL_BINDING,
+    CORRELATION_ID,
+    BINDING_DEFINITION,
+    HEADERS_SCHEMA,
+    PAYLOAD_SCHEMA;
 
     private static final String EXTENSION_PATTERN = "^x-.*";
 
@@ -106,11 +117,14 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     }
 
     private static void buildTags(YamlGrammarBuilder b) {
-        b.rule(TAG).is(b.object(
-                b.mandatoryProperty("name", b.string()),
-                b.property("description", DESCRIPTION),
-                b.property("externalDocs", EXTERNAL_DOC),
-                b.patternProperty(EXTENSION_PATTERN, b.anything())));
+        b.rule(TAG).is(b.firstOf(
+                b.string(), // Aceptar un string directamente para un tag simple
+                b.object(   // Aceptar un objeto, si es que defines los tags con propiedades adicionales
+                b.property("name", b.string()),
+                b.property("description", DESCRIPTION)
+        )
+        ));
+
     }
 
     private static void buildSecurityDefinitions(YamlGrammarBuilder b) {
@@ -176,47 +190,41 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
 
     private static void buildChannels(YamlGrammarBuilder b) {
         b.rule(CHANNELS).is(b.object(
-                b.patternProperty(".*", CHANNEL),
-                b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
+            b.patternProperty(".*", CHANNEL),
+            b.patternProperty(EXTENSION_PATTERN, b.anything())
+        ));
+    
         b.rule(CHANNEL).is(b.object(
-                b.property("$ref", b.string()),
-                b.property("description", DESCRIPTION),
-                b.property("subscribe", OPERATION),
-                b.property("publish", OPERATION),
-                b.property("parameters", b.object(
-                        b.patternProperty(".*", PARAMETER))),
-                b.property("bindings", CHANNEL_BINDINGS),
-                b.property("callbacks", CALLBACKS),
-                b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
+            b.property("$ref", b.string()),
+            b.property("description", DESCRIPTION),
+            b.property("subscribe", OPERATION),
+            b.property("publish", OPERATION),
+            b.property("parameters", b.object(
+                b.patternProperty(".*", PARAMETER)
+            )),
+            b.property("bindings", CHANNEL_BINDINGS),
+            b.property("callbacks", CALLBACKS),
+            b.patternProperty(EXTENSION_PATTERN, b.anything())
+        ));
+    
         b.rule(OPERATION).is(b.object(
-                b.property("operationId", b.string()),
-                b.property("summary", b.string()),
-                b.property("description", DESCRIPTION),
-                b.property("tags", b.array(TAG)),
-                b.property("externalDocs", EXTERNAL_DOC),
-                b.property("message", MESSAGE),
-                b.property("bindings", OPERATION_BINDINGS),
-                b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
-        b.rule(CHANNEL_BINDINGS).is(b.object(
-                b.patternProperty(".*", BINDING_DEFINITION),
-                b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
-        b.rule(OPERATION_BINDINGS).is(b.object(
-                b.patternProperty(".*", BINDING_DEFINITION),
-                b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
-        b.rule(BINDING_DEFINITION).is(b.object(
-                b.patternProperty(EXTENSION_PATTERN, b.anything())));
+            b.property("operationId", b.string()),
+            b.property("summary", b.string()),
+            b.property("description", DESCRIPTION),
+            b.property("tags", b.array(TAG)), // Permitir listas en tags
+            b.property("externalDocs", EXTERNAL_DOC),
+            b.property("message", b.firstOf(REF, MESSAGE)),
+            b.property("bindings", OPERATION_BINDINGS),
+            b.patternProperty(EXTENSION_PATTERN, b.anything())
+        ));
     }
-
+    
+    
     private static void buildComponents(YamlGrammarBuilder b) {
         b.rule(COMPONENTS).is(b.object(
                 b.property("schemas", b.object(
                         b.patternProperty(".*", SCHEMA))),
-                b.property("messages", b.object(
+                b.property("messages", b.object( // Asegúrate de que messages es un objeto
                         b.patternProperty(".*", MESSAGE))),
                 b.property("messageTraits", b.object(
                         b.patternProperty(".*", MESSAGE_TRAIT))),
@@ -256,6 +264,8 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
         buildMessageTraits(b);
         buildOperationTraits(b);
     }
+    
+    
 
     private static void buildMessageTraits(YamlGrammarBuilder b) {
         b.rule(MESSAGE_TRAIT).is(b.object(
@@ -286,9 +296,10 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     private static void buildMessages(YamlGrammarBuilder b) {
         b.rule(MESSAGE).is(
             b.object(
+                b.property("name", b.string()),
                 b.property("contentType", b.string()),
-                b.property("headers", SCHEMA),
-                b.property("payload", SCHEMA),
+                b.property("headers", b.firstOf(REF, SCHEMA)),
+                b.property("payload", b.firstOf(REF, SCHEMA)),
                 b.property("description", DESCRIPTION),
                 b.property("examples", b.array(
                     b.object(
@@ -305,6 +316,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
         );
     }
     
+
 
     private static void buildSchema(YamlGrammarBuilder b) {
         b.rule(SCHEMA).is(b.object(
@@ -360,7 +372,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
         ));
       }
 
-    private static void buildServer(YamlGrammarBuilder b) {
+      private static void buildServer(YamlGrammarBuilder b) {
         b.rule(SERVER).is(b.object(
                 b.mandatoryProperty("url", b.string()),
                 b.mandatoryProperty("protocol", b.string()),
@@ -369,16 +381,26 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
                         b.patternProperty(".*", SERVER_VARIABLE))),
                 b.property("security", b.array(SECURITY_REQUIREMENT)),
                 b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
+    
         b.rule(SERVER_VARIABLE).is(b.object(
-                b.property("enum", b.array(b.string())),
+                b.property("enum", b.array(b.string())), // Permitir listas
                 b.mandatoryProperty("default", b.string()),
                 b.property("description", DESCRIPTION),
                 b.patternProperty(EXTENSION_PATTERN, b.anything())));
+    
+        b.rule(SERVERS).is(
+                b.firstOf(
+                        b.array(SERVER), // Aceptar un array de objetos SERVER
+                        b.object(b.patternProperty(".*", SERVER)) // Aceptar un objeto con claves que mapean a SERVER
+        )
+        );
 
-        b.rule(SERVERS).is(b.object(
-                b.patternProperty(".*", SERVER)));
+        // Permitir objetos de servidores
     }
+    
+    
+    
+    
 
     private static void buildInfo(YamlGrammarBuilder b) {
         b.rule(INFO).is(b.object(
@@ -387,18 +409,19 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
                 b.property("description", DESCRIPTION),
                 b.property("termsOfService", b.string()),
                 b.property("contact", CONTACT),
-                b.property("license", LICENSE),
+                b.property("license", LICENSE), // LICENSE es un objeto
                 b.patternProperty(EXTENSION_PATTERN, b.anything())));
         b.rule(CONTACT).is(b.object(
                 b.property("name", b.string()),
                 b.property("url", b.string()),
                 b.property("email", b.string()),
                 b.patternProperty(EXTENSION_PATTERN, b.anything())));
-        b.rule(LICENSE).is(b.object(
+        b.rule(LICENSE).is(b.object( // LICENSE es un objeto
                 b.mandatoryProperty("name", b.string()),
                 b.property("url", b.string()),
                 b.patternProperty(EXTENSION_PATTERN, b.anything())));
     }
+    
 
     private static void buildCallbacks(YamlGrammarBuilder b) {
         b.rule(CALLBACKS).is(b.object(

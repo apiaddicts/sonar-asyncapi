@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.apiaddicts.apitools.dosonarapi.AsyncApiCheckVerifier;
 
 public class SummaryCapitalCheckTest {
-  /*@Test
-  public void verify_media_type_in_v4() {
+  @Test
+  public void verify_summary_capital_in_v4() {
     AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/summary-capital.yaml", new SummaryCapitalCheck());
-  }*/
+  }
 }

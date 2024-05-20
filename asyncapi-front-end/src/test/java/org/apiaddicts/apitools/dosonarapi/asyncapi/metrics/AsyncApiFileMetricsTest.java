@@ -36,7 +36,7 @@ public class AsyncApiFileMetricsTest {
 
   @Test
   public void paths() {
-    assertThat(metrics("paths.yaml").numberOfChannels()).isEqualTo(1);
+    assertThat(metrics("channels.yaml").numberOfChannels()).isEqualTo(1);
   }
 
   //TODO 1

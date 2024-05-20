@@ -34,7 +34,7 @@ public class AsyncApiParsingErrorCheckTest {
   @Test
   public void reports_parsing_errors() {
     AsyncApiVisitorContext context = new AsyncApiVisitorContext(new TestFile(), new RecognitionException(3, "Parsing exception message"));
-    AsyncApiParsingErrorCheck check = new AsyncApiParsingErrorCheck();
+    ParsingErrorCheck check = new ParsingErrorCheck();
 
     List<PreciseIssue> issues = check.scanFileForIssues(context);
 

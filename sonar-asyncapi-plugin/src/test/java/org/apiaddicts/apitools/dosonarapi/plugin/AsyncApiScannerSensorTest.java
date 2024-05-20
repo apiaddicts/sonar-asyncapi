@@ -49,7 +49,7 @@ import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.LogTester;
 import org.apiaddicts.apitools.dosonarapi.checks.AsyncApiCheckList;
-import org.apiaddicts.apitools.dosonarapi.checks.AsyncApiParsingErrorCheck;
+import org.apiaddicts.apitools.dosonarapi.checks.ParsingErrorCheck;
 import org.apiaddicts.apitools.dosonarapi.checks.ChannelAmbiguityCheck;
 import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiMetrics;
 

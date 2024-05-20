@@ -68,14 +68,7 @@ public class AsyncApiCheckVerifier {
   public static List<PreciseIssue> scanFileForIssues(File file, AsyncApiCheck check) {
     return check.scanFileForIssues(TestAsyncApiVisitorRunner.createContext(file));
   }
-
-  /**
-   * Verifies that the provided file will raise all the expected issues when analyzed with the given check.
-   *
-   * @param path The file to be analyzed
-   * @param check The check to be used for the analysis
-   * @param isV2 <code>true</code> if OpenApiSpecification version 2 or <code>false</code> if version 3
-   */
+  
   public static void verify(String path, AsyncApiCheck check) {
     AsyncApiCheckVerifier verifier = new AsyncApiCheckVerifier();
     AsyncApiVisitor collector = new ExpectedIssueCollector(verifier);

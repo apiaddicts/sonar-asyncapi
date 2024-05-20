@@ -34,7 +34,7 @@ public class SummaryCapitalCheck extends AsyncApiCheck {
 
     @Override
     public Set<AstNodeType> subscribedKinds() {
-        return Sets.newHashSet(AsyncApiGrammar.CHANNEL, AsyncApiGrammar.OPERATION, AsyncApiGrammar.MESSAGE); 
+        return Sets.newHashSet(AsyncApiGrammar.CHANNELS, AsyncApiGrammar.OPERATION, AsyncApiGrammar.MESSAGE); 
     }
 
     @Override

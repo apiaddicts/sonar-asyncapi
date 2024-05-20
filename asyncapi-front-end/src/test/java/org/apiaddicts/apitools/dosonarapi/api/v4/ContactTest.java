@@ -1,5 +1,5 @@
 /*
- * doSonarAPI: SonarQube AsyncAPI Plugin
+ * doSonarAPI: SonarQube OpenAPI Plugin
  * Copyright (C) 2021-2022 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
@@ -17,14 +17,19 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.apiaddicts.apitools.dosonarapi.checks;
+package org.apiaddicts.apitools.dosonarapi.api.v4;
 
+import org.apiaddicts.apitools.dosonarapi.asyncapi.BaseNodeTest;
 import org.junit.Test;
-import org.apiaddicts.apitools.dosonarapi.AsyncApiCheckVerifier;
+import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
 
-public class SummaryCapitalCheckTest {
-  /*@Test
-  public void verify_media_type_in_v4() {
-    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/summary-capital.yaml", new SummaryCapitalCheck());
-  }*/
+public class ContactTest extends BaseNodeTest<AsyncApiGrammar> {
+  @Test
+  public void can_parse_contact() {
+    JsonNode node = parseResource(AsyncApiGrammar.CONTACT, "/models/shared/contact.yaml");
+
+    assertEquals("API Support", node, "/name");
+    assertEquals("http://www.swagger.io/support", node, "/url");
+    assertEquals("support@swagger.io", node, "/email");
+  }
 }

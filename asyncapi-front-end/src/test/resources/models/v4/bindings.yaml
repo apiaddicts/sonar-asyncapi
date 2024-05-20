@@ -1,0 +1,6 @@
+mqtt:
+  qos: 2
+  retain: false
+amqp:
+  contentEncoding: gzip
+  messageType: text

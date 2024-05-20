@@ -1,0 +1,42 @@
+schemas:
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+      age:
+        type: integer
+  Address:
+    type: object
+    properties:
+      street:
+        type: string
+      city:
+        type: string
+messages:
+  UserCreated:
+    description: User created message
+    payload:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+  UserUpdated:
+    description: User updated message
+    payload:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+securitySchemes:
+  basicAuth:
+    type: http
+    scheme: basic
+  apiKey:
+    type: apiKey
+    name: api_key
+    in: header

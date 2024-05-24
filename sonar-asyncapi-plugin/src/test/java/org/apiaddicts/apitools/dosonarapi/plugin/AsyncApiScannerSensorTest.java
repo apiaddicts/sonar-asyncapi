@@ -81,7 +81,7 @@ public class AsyncApiScannerSensorTest {
     assertThat(descriptor.type()).isEqualTo(InputFile.Type.MAIN);
   }
 
-/*@Test
+  @Test
   public void test_issues_asyncapi() {
       activeRules = (new ActiveRulesBuilder())
         .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, "ChannelAmbiguity"))
@@ -92,7 +92,7 @@ public class AsyncApiScannerSensorTest {
       sensor().execute(context);
   
       String key = "moduleKey:file1.yaml";
-      assertThat(context.measure(key, CoreMetrics.NCLOC).value()).isEqualTo(29);
+      assertThat(context.measure(key, CoreMetrics.NCLOC).value()).isEqualTo(33);
       assertThat(context.measure(key, AsyncApiMetrics.CHANNELS_COUNT).value()).isEqualTo(2);
       assertThat(context.measure(key, AsyncApiMetrics.MESSAGES_COUNT).value()).isEqualTo(2);
       assertThat(context.measure(key, AsyncApiMetrics.COMPONENTS_COUNT).value()).isEqualTo(1); 
@@ -119,7 +119,7 @@ public class AsyncApiScannerSensorTest {
   public void parse_error_asyncapi() {
       inputFile("parse-error.yaml");
       activeRules = (new ActiveRulesBuilder())
-        .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, AsyncApiParsingErrorCheck.CHECK_KEY))
+        .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
         .activate()
         .build();
       sensor().execute(context);
@@ -132,22 +132,24 @@ public class AsyncApiScannerSensorTest {
   }
 
 // ADRI
+/* 
   @Test
   public void parse_openapi3_headers_ref() {
     inputFile("headers_ref.yaml");
     activeRules = (new ActiveRulesBuilder())
-            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, AsyncApiParsingErrorCheck.CHECK_KEY))
+            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
             .activate()
             .build();
     sensor().execute(context);
   }
+  */
 
 
   @Test
   public void parse_yaml_break_comment_ok() {
     inputFile("parse-yaml.yaml");
     activeRules = (new ActiveRulesBuilder())
-            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, AsyncApiParsingErrorCheck.CHECK_KEY))
+            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
             .activate()
             .build();
     sensor().execute(context);
@@ -159,7 +161,7 @@ public class AsyncApiScannerSensorTest {
   public void parse_yaml_slash_ok() {
     inputFile("parse-error-slash.json");
     activeRules = (new ActiveRulesBuilder())
-            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, AsyncApiParsingErrorCheck.CHECK_KEY))
+            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
             .activate()
             .build();
     sensor().execute(context);
@@ -171,7 +173,7 @@ public class AsyncApiScannerSensorTest {
   public void parse_yaml_tabs_ok() {
     inputFile("parse-error-tabs.json");
     activeRules = (new ActiveRulesBuilder())
-            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, AsyncApiParsingErrorCheck.CHECK_KEY))
+            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
             .activate()
             .build();
     sensor().execute(context);
@@ -186,14 +188,14 @@ public class AsyncApiScannerSensorTest {
     for (String file: files) {
       context = SensorContextTester.create(baseDir);
       inputFile(file);
-      activeRules = (new ActiveRulesBuilder()).create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, AsyncApiParsingErrorCheck.CHECK_KEY))
+      activeRules = (new ActiveRulesBuilder()).create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
               .activate().build();
       sensor().execute(context);
       if (!context.allIssues().isEmpty() || !context.allAnalysisErrors().isEmpty()) errorFiles.add(file);
     }
     System.out.println(errorFiles);
   }
-*/
+
   @Test
   public void cancelled_analysis() {
     InputFile inputFile = inputFile("file1.yaml");

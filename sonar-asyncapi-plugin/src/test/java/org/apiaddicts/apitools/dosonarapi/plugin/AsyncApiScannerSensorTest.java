@@ -1,5 +1,5 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
+ * doSonarAPI: SonarQube AsyncAPI Plugin
  * Copyright (C) 2021-2022 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
@@ -127,7 +127,7 @@ public class AsyncApiScannerSensorTest {
       assertThat(context.allAnalysisErrors())
           .extracting(e -> e.inputFile().filename(), e -> e.location().line(), e -> e.location().lineOffset(), AnalysisError::message)
           .containsExactlyInAnyOrder(
-              tuple("asyncapi-error.yaml", 3, 2, "Missing required properties: [version]") 
+              tuple("parse-error.yaml", 3, 2, "Missing required properties: [version]") 
           );
   }
 

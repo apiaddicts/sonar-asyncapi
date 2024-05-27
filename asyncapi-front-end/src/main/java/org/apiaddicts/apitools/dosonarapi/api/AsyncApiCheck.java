@@ -40,7 +40,6 @@ public class AsyncApiCheck extends AsyncApiVisitor {
     issues.clear();
     scanFile(context);
     return Collections.unmodifiableList(new ArrayList<>(issues));
-    
   }
 
   /**

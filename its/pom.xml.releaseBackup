@@ -87,7 +87,7 @@
                                             <overWrite>true</overWrite>
                                         </artifactItem>
                                     </artifactItems>
-                                    <outputDirectory>../sonar-openapi-plugin/target</outputDirectory>
+                                    <outputDirectory>../sonar-asyncapi-plugin/target</outputDirectory>
                                     <overWriteReleases>true</overWriteReleases>
                                     <overWriteSnapshots>true</overWriteSnapshots>
                                 </configuration>

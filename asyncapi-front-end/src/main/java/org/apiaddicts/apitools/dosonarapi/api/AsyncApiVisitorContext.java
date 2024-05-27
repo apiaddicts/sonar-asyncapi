@@ -47,13 +47,7 @@ public class AsyncApiVisitorContext {
     this.issues = issues;
     this.parsingException = parsingException;
     if (rootTree != null) {
-      AsyncApiVisitor visitor = new AsyncApiVisitor() {
-          @Override
-          public void scanFile(AsyncApiVisitorContext context) {
-              super.scanFile(context);
-          }
-      };
-      visitor.scanFile(this);
+      this.collector.scanFile(this);
     }
   }
 

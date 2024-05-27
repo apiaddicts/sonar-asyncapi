@@ -1,5 +1,5 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
+ * doSonarAPI: SonarQube AsyncAPI Plugin
  * Copyright (C) 2021-2022 Apiaddicts
  * contacta AT apiaddicts DOT org
  *

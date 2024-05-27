@@ -1,6 +1,6 @@
 /*
  * doSonarAPI: SonarQube AsyncAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -117,18 +117,18 @@ public class AsyncApiScannerSensorTest {
 
   @Test
   public void parse_error_asyncapi() {
-      inputFile("parse-error.yaml");
-      activeRules = (new ActiveRulesBuilder())
-        .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
-        .activate()
-        .build();
-      sensor().execute(context);
-      assertThat(context.allIssues()).hasSize(1); 
-      assertThat(context.allAnalysisErrors())
-          .extracting(e -> e.inputFile().filename(), e -> e.location().line(), e -> e.location().lineOffset(), AnalysisError::message)
-          .containsExactlyInAnyOrder(
-              tuple("parse-error.yaml", 3, 2, "Missing required properties: [version]") 
-          );
+    inputFile("parse-error.yaml");
+    activeRules = (new ActiveRulesBuilder())
+      .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
+      .activate()
+      .build();
+    sensor().execute(context);
+    assertThat(context.allIssues()).hasSize(1); 
+    assertThat(context.allAnalysisErrors())
+        .extracting(e -> e.inputFile().filename(), e -> e.location().line(), e -> e.location().lineOffset(), AnalysisError::message)
+        .containsExactlyInAnyOrder(
+            tuple("parse-error.yaml", 3, 2, "Missing required properties: [version]") 
+        );
   }
 
 // ADRI

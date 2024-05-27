@@ -1,6 +1,6 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * doSonarAPI: SonarQube AsyncAPI Plugin
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@
 package org.apiaddicts.apitools.dosonarapi.api.v4;
 
 import org.sonar.sslr.grammar.GrammarRuleKey;
-import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.ValidationRule;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.YamlGrammarBuilder;
 
 @java.lang.SuppressWarnings("squid:S1192") // Voluntarily ignoring string constants redefinitions in this file
@@ -417,18 +416,14 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
         // Permitir objetos de servidores
     }
     
-    
-    
-    
-
     private static void buildInfo(YamlGrammarBuilder b) {
         b.rule(INFO).is(b.object(
                 b.mandatoryProperty("title", b.string()),
-                b.mandatoryProperty("version", b.string()),
                 b.property("description", DESCRIPTION),
                 b.property("termsOfService", b.string()),
                 b.property("contact", CONTACT),
-                b.property("license", LICENSE), // LICENSE es un objeto
+                b.mandatoryProperty("version", b.string()),
+                b.property("license", LICENSE), 
                 b.patternProperty(EXTENSION_PATTERN, b.anything())));
         b.rule(CONTACT).is(b.object(
                 b.property("name", b.string()),

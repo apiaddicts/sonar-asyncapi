@@ -58,7 +58,7 @@
     <license.title>doSonarAPI: SonarQube AsyncAPI Plugin</license.title>
     <license.owner>Apiaddicts</license.owner>
     <license.mailto>contacta AT apiaddicts DOT org</license.mailto>
-    <license.years>${project.inceptionYear}-2022</license.years>
+    <license.years>${project.inceptionYear}-2024</license.years>
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     <sonar.pluginClass>org.apiaddicts.apitools.dosonarapi.plugin.AsyncApiPlugin</sonar.pluginClass>
     <sonar.pluginName>doSonarAPI</sonar.pluginName>

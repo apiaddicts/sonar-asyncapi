@@ -132,17 +132,6 @@ public class AsyncApiScannerSensorTest {
   }
 
 // ADRI
-/* 
-  @Test
-  public void parse_openapi3_headers_ref() {
-    inputFile("headers_ref.yaml");
-    activeRules = (new ActiveRulesBuilder())
-            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
-            .activate()
-            .build();
-    sensor().execute(context);
-  }
-  */
 
 
   @Test

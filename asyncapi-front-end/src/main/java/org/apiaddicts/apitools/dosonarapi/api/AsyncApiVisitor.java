@@ -25,7 +25,7 @@ import java.util.List;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
 
 /**
- * Base visitor for the OpenAPI checks.
+ * Base visitor for the AsyncAPI checks.
  */
 public class AsyncApiVisitor {
 

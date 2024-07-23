@@ -90,7 +90,7 @@ public class AsyncApiAnalyzer {
             JsonNode rootNode = AsyncApiParser.createGeneric(configuration).parse(content);
 
             // Use the generic parser as there's no need to distinguish versions
-            YamlParser targetParser = AsyncApiParser.createGeneric(configuration);
+            YamlParser targetParser = AsyncApiParser.createAsyncApi(configuration);
             visitorContext = new AsyncApiVisitorContext(targetParser.parse(content), targetParser.getIssues(), asyncApiFile);
             saveMeasures(inputFile, visitorContext);
         } catch (ValidationException e) {

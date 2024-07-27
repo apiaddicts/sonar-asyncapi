@@ -35,7 +35,7 @@ import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
 
 import static org.apiaddicts.apitools.dosonarapi.checks.ChannelAmbiguityCheck.ConflictMode.AMBIGUOUS;
 import static org.apiaddicts.apitools.dosonarapi.checks.ChannelAmbiguityCheck.ConflictMode.CLEAR;
-import static org.apiaddicts.apitools.dosonarapi.api.PathUtils.isVariable;
+import static org.apiaddicts.apitools.dosonarapi.api.ChannelUtils.isVariable;
 
 @Rule(key = ChannelAmbiguityCheck.CHECK_KEY)
 public class ChannelAmbiguityCheck extends AsyncApiCheck {

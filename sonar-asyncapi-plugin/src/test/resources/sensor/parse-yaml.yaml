@@ -12,9 +12,7 @@ channels:
       message:
         contentType: 'application/json'
         payload:
-          description: |
-            This is a simple message description.
-          $ref: '#/components/messages/okMessage'
+          $ref: '#/components/schemas/okMessage'
 
   # Test comment
   test/two:
@@ -24,29 +22,33 @@ channels:
       message:
         contentType: 'application/json'
         payload:
-          description: |
-            This is a complex
-            multiline description
-
-            with blank lines
-            and other things
-          $ref: '#/components/messages/okMessage'
+          $ref: '#/components/schemas/complexMessage'
 
 components:
-  messages:
+  schemas:
     okMessage:
-      contentType: 'application/json'
-      payload:
-        type: object
-        properties:
-          status:
-            type: string
-            description: Ok
+      type: object
+      description: |
+        This is a simple message description.
+      properties:
+        status:
+          type: string
+          description: Ok
+    complexMessage:
+      type: object
+      description: |
+        This is a complex
+        multiline description
+
+        with blank lines
+        and other things
+      properties:
+        status:
+          type: string
+          description: Ok
     unexpectedErrorMessage:
-      contentType: 'application/json'
-      payload:
-        type: object
-        properties:
-          status:
-            type: string
-            description: Unexpected error
+      type: object
+      properties:
+        status:
+          type: string
+          description: Unexpected error

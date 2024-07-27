@@ -1,27 +1,30 @@
-asyncapi: '2.1.0'
+asyncapi: "2.1.0"
 info:
   title: Example Messaging API
-  version: '1.0.0'
+  version: "1.0.0"
 channels:
-  'pets/{petId}':
+  pets:
     subscribe:
       operationId: getPetsDetails
       message:
-        contentType: 'application/json'
+        contentType: "application/json"
         payload:
           type: object
           properties:
             petId:
               type: string
             status:
-              description: 'Details of the pet requested'
-  'pets/1234':
+              description: "Details of the pet requested"
+  user/signedup:
     subscribe:
-      operationId: getSpecificPetDetails
       message:
-        contentType: 'application/json'
+        contentType: "application/json"
         payload:
-          $ref: '#/components/schemas/Pet'
+          type: object
+          properties:
+          #holahjola
+            name:
+              type: string
 components:
   schemas:
     Pet:

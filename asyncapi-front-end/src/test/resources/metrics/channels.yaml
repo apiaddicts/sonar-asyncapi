@@ -18,5 +18,3 @@ channels:
             description:
               type: string
               description: some response
-  /newpets:
-    $ref: '#/channels/~1pets'

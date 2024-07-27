@@ -22,6 +22,10 @@
  */
 package org.apiaddicts.apitools.dosonarapi.api;
 
+/**
+ * A file being parsed by the scanner.
+ */
+
 public interface AsyncApiFile {
   String content();
 

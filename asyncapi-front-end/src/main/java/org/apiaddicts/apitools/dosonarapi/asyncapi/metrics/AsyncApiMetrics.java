@@ -27,26 +27,26 @@ import org.sonar.api.measures.Metrics;
 import static java.util.Arrays.asList;
 
 /**
- * Provides metrics definitions to the SonarQube engine for AsyncAPI documents.
+ * Provides metrics definitions to the SonarQube engine.
  */
 public class AsyncApiMetrics implements Metrics {
 
+  public static final Metric<Integer> OPERATIONS_COUNT = new Metric.Builder("operations_count", "Operations Count", Metric.ValueType.INT)
+      .setDescription("Number of operations in the contract")
+      .setDirection(Metric.DIRECTION_WORST)
+      .setQualitative(false)
+      .setDomain(CoreMetrics.DOMAIN_SIZE)
+      .create();
+
   public static final Metric<Integer> CHANNELS_COUNT = new Metric.Builder("channels_count", "Channels Count", Metric.ValueType.INT)
-      .setDescription("Number of channels in the AsyncAPI document")
+      .setDescription("Number of channels in the contract")
       .setDirection(Metric.DIRECTION_WORST)
       .setQualitative(false)
       .setDomain(CoreMetrics.DOMAIN_SIZE)
       .create();
 
-  public static final Metric<Integer> MESSAGES_COUNT = new Metric.Builder("messages_count", "Messages Count", Metric.ValueType.INT)
-      .setDescription("Number of messages in the AsyncAPI document")
-      .setDirection(Metric.DIRECTION_WORST)
-      .setQualitative(false)
-      .setDomain(CoreMetrics.DOMAIN_SIZE)
-      .create();
-
-  public static final Metric<Integer> COMPONENTS_COUNT = new Metric.Builder("components_count", "Components Count", Metric.ValueType.INT)
-      .setDescription("Number of components in the AsyncAPI document")
+  public static final Metric<Integer> SCHEMAS_COUNT = new Metric.Builder("schemas_count", "Schemas Count", Metric.ValueType.INT)
+      .setDescription("Number of schemas in the contract")
       .setDirection(Metric.DIRECTION_WORST)
       .setQualitative(false)
       .setDomain(CoreMetrics.DOMAIN_SIZE)
@@ -54,6 +54,6 @@ public class AsyncApiMetrics implements Metrics {
 
   @Override
   public List<Metric> getMetrics() {
-    return asList(CHANNELS_COUNT, MESSAGES_COUNT, COMPONENTS_COUNT);
+    return asList(OPERATIONS_COUNT, CHANNELS_COUNT, SCHEMAS_COUNT);
   }
 }

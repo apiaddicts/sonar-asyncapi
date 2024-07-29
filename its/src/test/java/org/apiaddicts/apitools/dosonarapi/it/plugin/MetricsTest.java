@@ -106,7 +106,7 @@ public class MetricsTest {
     assertThat(getFileMeasureAsInt("lines")).isEqualTo(25); // Total lines in the AsyncAPI document
     assertThat(getFileMeasureAsInt("files")).isEqualTo(1); // Just one AsyncAPI file
     // Adapting to AsyncAPI: operations become actions within channels, paths become channels, and schemas are based on messages
-    assertThat(getFileMeasureAsInt("operations_count")).isEqualTo(1); // Number of subscribe operations within channels
+    assertThat(getFileMeasureAsInt("asyncapi_operations_count")).isEqualTo(1); // Number of subscribe operations within channels
     assertThat(getFileMeasureAsInt("channels_count")).isEqualTo(1); // Channels in AsyncAPI
     assertThat(getFileMeasureAsInt("messages_count")).isEqualTo(1); // Assuming one main message schema based on "petListRequest"
 

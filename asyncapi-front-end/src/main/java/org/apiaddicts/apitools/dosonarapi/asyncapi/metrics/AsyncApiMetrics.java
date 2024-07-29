@@ -31,7 +31,7 @@ import static java.util.Arrays.asList;
  */
 public class AsyncApiMetrics implements Metrics {
 
-  public static final Metric<Integer> OPERATIONS_COUNT = new Metric.Builder("operations_count", "Operations Count", Metric.ValueType.INT)
+  public static final Metric<Integer> ASYNCAPI_OPERATIONS_COUNT = new Metric.Builder("asyncapi_operations_count", "Operations Count", Metric.ValueType.INT)
       .setDescription("Number of operations in the contract")
       .setDirection(Metric.DIRECTION_WORST)
       .setQualitative(false)
@@ -45,7 +45,7 @@ public class AsyncApiMetrics implements Metrics {
       .setDomain(CoreMetrics.DOMAIN_SIZE)
       .create();
 
-  public static final Metric<Integer> SCHEMAS_COUNT = new Metric.Builder("schemas_count", "Schemas Count", Metric.ValueType.INT)
+  public static final Metric<Integer> ASYNCAPI_SCHEMAS_COUNT = new Metric.Builder("asyncapi_schemas_count", "Schemas Count", Metric.ValueType.INT)
       .setDescription("Number of schemas in the contract")
       .setDirection(Metric.DIRECTION_WORST)
       .setQualitative(false)
@@ -54,6 +54,6 @@ public class AsyncApiMetrics implements Metrics {
 
   @Override
   public List<Metric> getMetrics() {
-    return asList(OPERATIONS_COUNT, CHANNELS_COUNT, SCHEMAS_COUNT);
+    return asList(ASYNCAPI_OPERATIONS_COUNT, CHANNELS_COUNT, ASYNCAPI_SCHEMAS_COUNT);
   }
 }

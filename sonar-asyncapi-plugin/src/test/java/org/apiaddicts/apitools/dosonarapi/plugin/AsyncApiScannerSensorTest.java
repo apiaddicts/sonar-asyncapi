@@ -98,7 +98,7 @@ public class AsyncApiScannerSensorTest {
 
     assertThat(context.measure(key, CoreMetrics.NCLOC).value()).isEqualTo(36);
     assertThat(context.measure(key, AsyncApiMetrics.CHANNELS_COUNT).value()).isEqualTo(2); 
-    assertThat(context.measure(key, AsyncApiMetrics.OPERATIONS_COUNT).value()).isEqualTo(2);
+    assertThat(context.measure(key, AsyncApiMetrics.ASYNCAPI_OPERATIONS_COUNT).value()).isEqualTo(2);
     assertThat(context.measure(key, CoreMetrics.COMPLEXITY).value()).isEqualTo(14);
     assertThat(context.measure(key, CoreMetrics.COMMENT_LINES).value()).isEqualTo(1);
 

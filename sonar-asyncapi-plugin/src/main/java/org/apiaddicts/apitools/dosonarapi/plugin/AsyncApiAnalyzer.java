@@ -220,8 +220,8 @@ public class AsyncApiAnalyzer {
         saveMetricOnFile(inputFile, CoreMetrics.NCLOC, linesOfCode.size());
         saveMetricOnFile(inputFile, CoreMetrics.COMMENT_LINES, linesOfComments.size());
         saveMetricOnFile(inputFile, AsyncApiMetrics.CHANNELS_COUNT, fileMetrics.numberOfChannels());
-        saveMetricOnFile(inputFile, AsyncApiMetrics.SCHEMAS_COUNT, fileMetrics.numberOfSchemas());
-        saveMetricOnFile(inputFile, AsyncApiMetrics.OPERATIONS_COUNT, fileMetrics.numberOfOperations());
+        saveMetricOnFile(inputFile, AsyncApiMetrics.ASYNCAPI_SCHEMAS_COUNT, fileMetrics.numberOfSchemas());
+        saveMetricOnFile(inputFile, AsyncApiMetrics.ASYNCAPI_OPERATIONS_COUNT, fileMetrics.numberOfOperations());
         saveMetricOnFile(inputFile, CoreMetrics.COMPLEXITY, fileMetrics.complexity());
 
         FileLinesContext fileLinesContext = fileLinesContextFactory.createFor(inputFile);

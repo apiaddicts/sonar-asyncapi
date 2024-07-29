@@ -1,0 +1,62 @@
+<p>
+    Summaries must start with a capital letter.
+    </p>
+    
+    <h2>Noncompliant Code Example (AsyncAPI)</h2>
+    <pre>
+    asyncapi: '2.3.0'
+    info:
+      version: '1.0.0'
+      title: Swagger Petstore Events
+    servers:
+      production:
+        url: broker.mycompany.com
+        protocol: mqtt
+    channels:
+      petAdded:
+        description: "an event for when a pet is added" # El resumen debe comenzar con mayúscula
+        publish:
+          summary: a new pet has been added # No conforme, no comienza con mayúscula
+          message:
+            contentType: application/json
+            name: PetAddedEvent
+            payload:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the pet
+                name:
+                  type: string
+                  description: Name of the pet
+    </pre>
+    
+    <h2>Compliant Solution (AsyncAPI)</h2>
+    <pre>
+    asyncapi: '2.3.0'
+    info:
+      version: '1.0.0'
+      title: Swagger Petstore Events
+    servers:
+      production:
+        url: broker.mycompany.com
+        protocol: mqtt
+    channels:
+      petAdded:
+        description: "An event for when a pet is added" # Ahora comienza con mayúscula
+        publish:
+          summary: A new pet has been added # Conforme, comienza con mayúscula
+          message:
+            contentType: application/json
+            name: PetAddedEvent
+            payload:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Unique identifier for the pet
+                name:
+                  type: string
+                  description: Name of the pet
+    </pre>
+  

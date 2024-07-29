@@ -100,7 +100,7 @@ INFO: Load server rules
 INFO: Load server rules (done) | time=229ms
 INFO: Index files
 INFO: 4 files indexed
-INFO: Quality profile for openapi: Sonar way
+INFO: Quality profile for asyncapi: Sonar way
 INFO: Sensor SonarJavaXmlFileSensor [java]
 INFO: Sensor SonarJavaXmlFileSensor [java] (done) | time=1ms
 INFO: Sensor AsyncAPI Scanner Sensor [asyncapi]

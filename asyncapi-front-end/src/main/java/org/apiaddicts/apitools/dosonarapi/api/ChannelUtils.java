@@ -1,6 +1,6 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * doSonarAPI: SonarQube AsyncAPI Plugin
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,20 @@ package org.apiaddicts.apitools.dosonarapi.api;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-public class PathUtils {
+public class ChannelUtils {
   public static final Pattern SPINAL_CASE_PATTERN = Pattern.compile("[a-z0-9-]+");
 
   public static boolean isVariable(String fragment) {
     return fragment.startsWith("{") && fragment.endsWith("}");
   }
 
-  private PathUtils() {
+  private ChannelUtils() {
     // Hidden utility type constructor
   }
 
-  public static boolean checkPath(String path, Predicate<String> segmentChecker) {
-    for (String fragment : path.split("/")) {
+  public static boolean checkChannel(String channel, Predicate<String> segmentChecker) {
+    String[] fragments = channel.split("/");
+    for (String fragment : fragments) {
       if (fragment.isEmpty() || isVariable(fragment)) {
         continue;
       }
@@ -50,35 +51,35 @@ public class PathUtils {
   }
 
   /**
-   * A resource path is a path that does not end with a variable.
+   * A resource channel is a channel that does not end with a variable.
    * Examples:
    * <ul>
-   * <li>{@code /some/parrots/{parrotId}} is not resource</li>
-   * <li>{@code /some/parrots/{parrotId}} is not a resource</li>
-   * <li>{@code /some/parrots/{parrotId}/head-color} is a resource</li>
+   * <li>{@code some/parrots/{parrotId}} is not resource</li>
+   * <li>{@code some/parrots/{parrotId}} is not a resource</li>
+   * <li>{@code some/parrots/{parrotId}/head-color} is a resource</li>
    * </ul>
-   * @param path the path to examine
-   * @return true if the path is a resource path
+   * @param channel the channel to examine
+   * @return true if the channel is a resource channel
    */
-  public static boolean isResourcePath(String path) {
-    String[] fragments = path.split("/");
+  public static boolean isResourceChannel(String channel) {
+    String[] fragments = channel.split("/");
     if (fragments.length == 0) {
       return true;
     }
     return !isVariable(fragments[fragments.length - 1]);
   }
 
-  public static String terminalSegment(String path) {
-    path = trimTrailingSlash(path);
-    String[] split = path.split("/");
+  public static String terminalSegment(String channel) {
+    channel = trimTrailingSlash(channel);
+    String[] split = channel.split("/");
     return split[split.length - 1];
   }
 
-  public static String trimTrailingSlash(String path) {
-    if (path.endsWith("/")) {
-      return path.substring(0, path.length() - 1);
+  public static String trimTrailingSlash(String channel) {
+    if (channel.endsWith("/")) {
+      return channel.substring(0, channel.length() - 1);
     } else {
-      return path;
+      return channel;
     }
   }
 }

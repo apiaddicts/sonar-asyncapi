@@ -1,6 +1,6 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * doSonarAPI: SonarQube AsyncAPI Plugin
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@ import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.YamlGrammarBuilder;
 public enum AsyncApiGrammar implements GrammarRuleKey {
   ROOT,
   INFO,
-  CHANNEL,
+  CHANNELS,
   COMPONENTS,
   PARAMETER,
   RESPONSE,
@@ -37,13 +37,12 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
   EXTERNAL_DOC,
   CONTACT,
   LICENSE,
-
   OPERATION,
   LINK,
   CALLBACK,
+  CALLBACKS,
   RESPONSES,
   REQUEST_BODY,
-
   SCHEMA,
   DISCRIMINATOR,
   HEADER,
@@ -74,14 +73,27 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
   CALLBACKS_COMPONENT,
   SCHEMA_PROPERTIES,
   DESCRIPTION,
-  
-  CHANNELS, CHANNEL_ITEM, 
-  MESSAGE, MESSAGES, MESSAGE_TRAIT, MESSAGE_BINDING, MESSAGES_COMPONENT, MESSAGE_EXAMPLE, 
-  OPERATION_TRAIT, OPERATION_BINDING, 
-  SERVER_BINDINGS, CHANNEL_BINDINGS, MESSAGE_BINDINGS, OPERATION_BINDINGS, SCHEMA_BINDINGS, 
-  SERVER_BINDING, CHANNEL_BINDING, 
-  CORRELATION_ID, BINDING_DEFINITION,
-  HEADERS_SCHEMA, PAYLOAD_SCHEMA; 
+  CHANNEL,
+  CHANNEL_ITEM,
+  MESSAGE,
+  MESSAGES,
+  MESSAGE_TRAIT,
+  MESSAGE_BINDING,
+  MESSAGES_COMPONENT,
+  MESSAGE_EXAMPLE,
+  OPERATION_TRAIT,
+  OPERATION_BINDING,
+  SERVER_BINDINGS,
+  CHANNEL_BINDINGS,
+  MESSAGE_BINDINGS,
+  OPERATION_BINDINGS,
+  SCHEMA_BINDINGS,
+  SERVER_BINDING,
+  CHANNEL_BINDING,
+  CORRELATION_ID,
+  BINDING_DEFINITION,
+  HEADERS_SCHEMA,
+  PAYLOAD_SCHEMA;
 
   private static final String EXTENSION_PATTERN = "^x-.*";
 
@@ -90,35 +102,48 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     b.setRootRule(ROOT);
 
     b.rule(ROOT).is(b.object(
-      b.mandatoryProperty("asyncapi", b.firstOf("2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0")), 
+      b.mandatoryProperty("asyncapi", b.firstOf("2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0")),
       b.mandatoryProperty("info", INFO),
-      b.property("servers", b.array(SERVER)),
+      b.property("servers", SERVERS),
       b.mandatoryProperty("channels", CHANNELS),
       b.property("components", COMPONENTS),
       b.property("tags", b.array(TAG)),
       b.property("externalDocs", EXTERNAL_DOC),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
 
+    // General Rules
+    b.rule(REF).is(b.object(
+      b.mandatoryProperty("$ref", b.string())));
+    b.rule(EXTERNAL_DOC).is(b.object(
+      b.property("description", DESCRIPTION),
+      b.mandatoryProperty("url", b.string()),
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
     b.rule(DESCRIPTION).is(b.string()).skip();
+
+    // Build sections
     buildInfo(b);
-    buildServer(b);
-    buildComponents(b);
+    buildServers(b);
     buildChannels(b);
+    buildComponents(b);
     buildSecurityDefinitions(b);
     buildTags(b);
+    buildCallbacks(b);
 
     return b;
   }
 
+  // Tags
   private static void buildTags(YamlGrammarBuilder b) {
-    b.rule(TAG).is(b.object(
-      b.mandatoryProperty("name", b.string()),
-      b.property("description", DESCRIPTION),
-      b.property("externalDocs", EXTERNAL_DOC),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-    ));
+    b.rule(TAG).is(b.firstOf(
+      b.string(),
+      b.object(
+        b.property("name", b.string()),
+        b.property("description", DESCRIPTION),
+        b.property("externalDocs", EXTERNAL_DOC),
+        b.patternProperty(EXTENSION_PATTERN, b.anything()))));
   }
 
+  // Security Definitions
   private static void buildSecurityDefinitions(YamlGrammarBuilder b) {
     b.rule(SECURITY_SCHEME).is(
       b.firstOf(HTTP_SECURITY_SCHEME, API_KEY_SECURITY_SCHEME, OAUTH2_SECURITY_SCHEME, OPENID_SECURITY_SCHEME));
@@ -179,18 +204,21 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.patternProperty(".*", b.array(b.string()))));
   }
 
+  // Channels
   private static void buildChannels(YamlGrammarBuilder b) {
     b.rule(CHANNELS).is(b.object(
-      b.patternProperty("^[^/].*", CHANNEL), 
+      b.patternProperty(".*", CHANNEL),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
-    
+
     b.rule(CHANNEL).is(b.object(
       b.property("$ref", b.string()),
       b.property("description", DESCRIPTION),
       b.property("subscribe", OPERATION),
       b.property("publish", OPERATION),
-      b.property("parameters", b.array(b.firstOf(REF, PARAMETER))),
+      b.property("parameters", b.object(
+        b.patternProperty(".*", PARAMETER))),
       b.property("bindings", CHANNEL_BINDINGS),
+      b.property("callbacks", CALLBACKS),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
 
     b.rule(OPERATION).is(b.object(
@@ -202,70 +230,71 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("message", b.firstOf(REF, MESSAGE)),
       b.property("bindings", OPERATION_BINDINGS),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
-    b.rule(CHANNEL_BINDINGS).is(b.object(
-      b.patternProperty(".*", BINDING_DEFINITION),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())));
-    
-    b.rule(OPERATION_BINDINGS).is(b.object(
-      b.patternProperty(".*", BINDING_DEFINITION),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())));
-      
-    b.rule(BINDING_DEFINITION).is(b.object(
-      b.patternProperty(EXTENSION_PATTERN, b.anything())));
   }
 
+  // Components
   private static void buildComponents(YamlGrammarBuilder b) {
     b.rule(COMPONENTS).is(b.object(
       b.property("schemas", b.object(
-          b.patternProperty(".+", SCHEMA))),
+        b.patternProperty(".*", SCHEMA))),
       b.property("messages", b.object(
-          b.patternProperty(".+", MESSAGE))),
+        b.patternProperty(".*", MESSAGE))),
       b.property("messageTraits", b.object(
-          b.patternProperty(".+", MESSAGE_TRAIT))),
+        b.patternProperty(".*", MESSAGE_TRAIT))),
       b.property("operationTraits", b.object(
-          b.patternProperty(".+", OPERATION_TRAIT))),
+        b.patternProperty(".*", OPERATION_TRAIT))),
       b.property("parameters", b.object(
-          b.patternProperty(".+", PARAMETER))),
+        b.patternProperty(".*", PARAMETER))),
       b.property("securitySchemes", b.object(
-          b.patternProperty(".+", SECURITY_SCHEME))),
+        b.patternProperty(".*", SECURITY_SCHEME))),
       b.property("serverBindings", b.object(
-          b.patternProperty(".+", SERVER_BINDING))),
+        b.patternProperty(".*", SERVER_BINDING))),
       b.property("channelBindings", b.object(
-          b.patternProperty(".+", CHANNEL_BINDING))),
+        b.patternProperty(".*", CHANNEL_BINDING))),
       b.property("operationBindings", b.object(
-          b.patternProperty(".+", OPERATION_BINDING))),
+        b.patternProperty(".*", OPERATION_BINDING))),
       b.property("messageBindings", b.object(
-          b.patternProperty(".+", MESSAGE_BINDING))),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-    ));
-      b.rule(SCHEMAS_COMPONENT).is(b.object(b.patternProperty(".*", b.firstOf(REF, SCHEMA))));
-      b.rule(MESSAGES_COMPONENT).is(b.object(b.patternProperty(".*", b.firstOf(REF, MESSAGE))));
-      b.rule(PARAMETERS_COMPONENT).is(b.object(b.patternProperty(".*", b.firstOf(REF, PARAMETER))));
-      b.rule(SECURITY_SCHEMES).is(b.object(b.patternProperty(".*", b.firstOf(REF, SECURITY_SCHEME))));
-      buildSchema(b);
-      buildMessages(b);
-      buildMessageTraits(b);
-      buildOperationTraits(b);
+        b.patternProperty(".*", MESSAGE_BINDING))),
+      b.property("responses", b.object(
+        b.patternProperty(".*", RESPONSE))),
+      b.property("requestBodies", b.object(
+        b.patternProperty(".*", REQUEST_BODY))),
+      b.property("headers", b.object(
+        b.patternProperty(".*", HEADER))),
+      b.property("examples", b.object(
+        b.patternProperty(".*", EXAMPLE))),
+      b.property("links", b.object(
+        b.patternProperty(".*", LINK))),
+      b.property("callbacks", b.object(
+        b.patternProperty(".*", CALLBACK))),
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
+    b.rule(SCHEMAS_COMPONENT).is(b.object(b.patternProperty(".*", b.firstOf(REF, SCHEMA))));
+    b.rule(MESSAGES_COMPONENT).is(b.object(b.patternProperty(".*", b.firstOf(REF, MESSAGE))));
+    b.rule(PARAMETERS_COMPONENT).is(b.object(b.patternProperty(".*", b.firstOf(REF, PARAMETER))));
+    b.rule(SECURITY_SCHEMES).is(b.object(b.patternProperty(".*", b.firstOf(REF, SECURITY_SCHEME))));
+    buildSchema(b);
+    buildMessages(b);
+    buildMessageTraits(b);
+    buildOperationTraits(b);
   }
 
+  // Message Traits
   private static void buildMessageTraits(YamlGrammarBuilder b) {
     b.rule(MESSAGE_TRAIT).is(b.object(
       b.property("contentType", b.string()),
-      b.property("headers", b.object(b.patternProperty(".+", SCHEMA))),
+      b.property("headers", b.object(b.patternProperty(".*", SCHEMA))),
       b.property("correlationId", b.object(
-          b.property("description", DESCRIPTION),
-          b.property("location", b.string())
-      )),
+        b.property("description", DESCRIPTION),
+        b.property("location", b.string()))),
       b.property("schemaFormat", b.string()),
       b.property("name", b.string()),
       b.property("description", DESCRIPTION),
       b.property("tags", b.array(TAG)),
       b.property("externalDocs", EXTERNAL_DOC),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-    ));
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
   }
 
+  // Operation Traits
   private static void buildOperationTraits(YamlGrammarBuilder b) {
     b.rule(OPERATION_TRAIT).is(b.object(
       b.property("operationId", b.string()),
@@ -274,58 +303,27 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("tags", b.array(TAG)),
       b.property("externalDocs", EXTERNAL_DOC),
       b.property("bindings", OPERATION_BINDINGS),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-    ));
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
   }
 
+  // Messages
   private static void buildMessages(YamlGrammarBuilder b) {
-    b.rule(HEADERS_SCHEMA).is(b.object(
-      b.property("correlationId", b.string()),
-      b.property("contentType", b.string()),
-      b.property("authorization", b.string()),
-      b.property("customHeader", b.string())
-    ));
-
-    b.rule(PAYLOAD_SCHEMA).is(b.object(
-      b.property("type", b.string()),
-      b.property("data", b.anything())
-    ));
-
-    b.rule(EXAMPLE).is(b.object(
-      b.property("summary", b.string()),
-      b.property("value", b.object(
-        b.property("headers", HEADERS_SCHEMA),
-        b.property("payload", PAYLOAD_SCHEMA)
-      ))
-    ));
-
-    b.rule(MESSAGE_BINDINGS).is(b.object(
-      b.property("mqtt", b.object(
-        b.property("qos", b.integer()),
-        b.property("retain", b.string())
-      )),
-      b.property("amqp", b.object(
-        b.property("contentEncoding", b.string()),
-        b.property("messageType", b.string())
-      ))
-    ));
-
     b.rule(MESSAGE).is(b.object(
-      b.property("contentType", b.string()),
-      b.property("headers", HEADERS_SCHEMA),
-      b.property("payload", PAYLOAD_SCHEMA),
       b.property("name", b.string()),
-      b.property("title", b.string()),
-      b.property("summary", b.string()),
+      b.property("contentType", b.string()),
+      b.property("headers", b.firstOf(REF, SCHEMA)),
+      b.property("payload", b.firstOf(REF, SCHEMA)),
       b.property("description", DESCRIPTION),
-      b.property("tags", b.array(TAG)),
-      b.property("externalDocs", EXTERNAL_DOC),
-      b.property("examples", b.array(EXAMPLE)),
-      b.property("bindings", MESSAGE_BINDINGS),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-    ));
-}
+      b.property("examples", b.array(
+        b.object(
+          b.property("headers", b.object(
+            b.patternProperty(".*", b.anything()))),
+          b.property("payload", b.object(
+            b.patternProperty(".*", b.anything())))))),
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
+  }
 
+  // Schema
   private static void buildSchema(YamlGrammarBuilder b) {
     b.rule(SCHEMA).is(b.object(
       b.property("title", b.string()),
@@ -375,51 +373,64 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("prefix", b.string()),
       b.property("attribute", b.bool()),
       b.property("wrapped", b.bool()),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-
-    ));
-  }
-  private static void buildServer(YamlGrammarBuilder b) {
-    b.rule(SERVERS).is(b.object(
-      b.patternProperty("^/.*", SERVER),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
-    b.rule(SERVERS).is(b.object(
+  }
+
+  // Servers
+  private static void buildServers(YamlGrammarBuilder b) {
+    b.rule(SERVER).is(b.object(
       b.mandatoryProperty("url", b.string()),
-      b.mandatoryProperty("protocol", b.string()), 
+      b.mandatoryProperty("protocol", b.string()),
       b.property("description", DESCRIPTION),
-      b.property("variables", b.object( 
+      b.property("variables", b.object(
         b.patternProperty(".*", SERVER_VARIABLE))),
-      b.property("security", b.array(SECURITY_REQUIREMENT)), 
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-    ));
+      b.property("security", b.array(SECURITY_REQUIREMENT)),
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
 
     b.rule(SERVER_VARIABLE).is(b.object(
-      b.property("enum", b.array(b.string())), 
-      b.mandatoryProperty("default", b.string()), 
+      b.property("enum", b.array(b.string())),
+      b.mandatoryProperty("default", b.string()),
       b.property("description", DESCRIPTION),
-      b.patternProperty(EXTENSION_PATTERN, b.anything())
-    ));
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
+
+    b.rule(SERVERS).is(
+      b.firstOf(
+        b.array(SERVER),
+        b.object(b.patternProperty(".*", SERVER))));
   }
 
+  // Info
   private static void buildInfo(YamlGrammarBuilder b) {
     b.rule(INFO).is(b.object(
       b.mandatoryProperty("title", b.string()),
       b.property("description", DESCRIPTION),
       b.property("termsOfService", b.string()),
       b.property("contact", CONTACT),
-      b.property("license", LICENSE),
       b.mandatoryProperty("version", b.string()),
+      b.property("license", LICENSE),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
     b.rule(CONTACT).is(b.object(
       b.property("name", b.string()),
       b.property("url", b.string()),
       b.property("email", b.string()),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
-
     b.rule(LICENSE).is(b.object(
       b.mandatoryProperty("name", b.string()),
       b.property("url", b.string()),
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
+  }
+
+  // Callbacks
+  private static void buildCallbacks(YamlGrammarBuilder b) {
+    b.rule(CALLBACKS).is(b.object(
+      b.patternProperty(".*", CALLBACK),
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
+
+    b.rule(CALLBACK).is(b.object(
+      b.property("$ref", b.string()),
+      b.property("description", DESCRIPTION),
+      b.property("subscribe", OPERATION),
+      b.property("publish", OPERATION),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
   }
 }

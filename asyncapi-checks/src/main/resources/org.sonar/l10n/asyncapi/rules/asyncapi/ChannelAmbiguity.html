@@ -1,0 +1,24 @@
+<p>The AsyncAPI specification allows for the definition of channels which are central to the interaction patterns in event-driven architectures. While using channels with parameters (templating) provides powerful ways to capture specific aspects or entities in an event's path, it can also lead to ambiguous or masking channel definitions. When defining channels, ensure that each channel is uniquely identifiable and avoid overlapping or duplicative channel definitions that could confuse subscribers or publishers.</p>
+
+<h2>Noncompliant Channel Example</h2>
+<p>In this example, the <tt>{userId}</tt> parameter in the first channel might be overshadowed by the more specific <tt>system</tt> parameter in the second channel. This can lead to confusion or the first channel never being subscribed to:</p>
+<pre>
+/user/{userId}/events
+/user/system/events
+</pre>
+
+<p>In this example, both channels use templated segments that could lead to conflicts depending on how they are interpreted by the subscribing or publishing application:</p>
+<pre>
+/device/{deviceId}/setup
+/device/{setupId}/setup
+</pre>
+
+<h2>Compliant Solution</h2>
+<p>Define your channels in a non-ambiguous way, ensuring that each channel clearly describes its purpose and context, minimizing the risk of overlap:</p>
+<pre>
+/users/{userId}/events
+/systems/{systemId}/events
+
+/devices/{deviceId}/setup
+/setups/{setupId}/configuration
+</pre>

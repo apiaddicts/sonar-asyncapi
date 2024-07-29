@@ -1,0 +1,28 @@
+asyncapi: '2.0.0'
+x-no-sonar: SomeId
+info:
+  version: 1.0.0
+  title: AsyncAPI Petstore
+servers:
+  - url: ws://petstore.swagger.io/v1
+    protocol: amqp
+channels:
+  /pets:
+    # a comment line
+    x-sonar-disable: SomeId
+    subscribe:
+      summary: Get pet information
+      operationId: getPets
+      message:
+        x-sonar-enable: SomeId
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            description:
+              type: string
+              description: "some response\nwith newlines"
+  #
+  # another comment line
+  /newpets:
+    $ref: '#/channels/~1pets'

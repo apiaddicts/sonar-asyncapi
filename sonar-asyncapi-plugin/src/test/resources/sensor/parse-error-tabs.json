@@ -1,0 +1,56 @@
+{
+	"asyncapi": "2.1.0",
+	"info": {
+		"title": "Development Events API",
+		"version": "1.0.0",
+		"description": "API for handling events related to software development."
+	},
+	"channels": {
+		"repo/updates": {
+			"description": "Channel for receiving updates about repository changes.",
+			"subscribe": {
+				"summary": "Subscribe to repo updates",
+				"operationId": "repoUpdate",
+				"message": {
+					"contentType": "application/json",
+					"payload": {
+						"type": "object",
+						"properties": {
+							"updateType": {
+								"type": "string",
+								"enum": ["commit", "merge", "branch"]
+							},
+							"detail": {
+								"type": "string",
+								"description": "Details about the update."
+							}
+						}
+					}
+				}
+			}
+		},
+		"bug/reports": {
+			"description": "Channel for bug reporting.",
+			"subscribe": {
+				"summary": "Get notifications of new bug reports",
+				"operationId": "bugReportReceive",
+				"message": {
+					"contentType": "application/json",
+					"payload": {
+						"type": "object",
+						"properties": {
+							"bugId": {
+								"type": "string",
+								"description": "The ID of the bug."
+							},
+							"description": {
+								"type": "string",
+								"description": "Description of the bug."
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,54 @@
+asyncapi: '2.1.0'
+info:
+  title: Test api
+  description: Test api
+  version: v1
+
+channels:
+  test/one:
+    subscribe:
+      summary: Test one.
+      operationId: testOne
+      message:
+        contentType: 'application/json'
+        payload:
+          $ref: '#/components/schemas/okMessage'
+
+  # Test comment
+  test/two:
+    subscribe:
+      summary: Test two.
+      operationId: testTwo
+      message:
+        contentType: 'application/json'
+        payload:
+          $ref: '#/components/schemas/complexMessage'
+
+components:
+  schemas:
+    okMessage:
+      type: object
+      description: |
+        This is a simple message description.
+      properties:
+        status:
+          type: string
+          description: Ok
+    complexMessage:
+      type: object
+      description: |
+        This is a complex
+        multiline description
+
+        with blank lines
+        and other things
+      properties:
+        status:
+          type: string
+          description: Ok
+    unexpectedErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Unexpected error

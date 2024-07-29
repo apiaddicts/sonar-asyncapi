@@ -1,6 +1,6 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * doSonarAPI: SonarQube AsyncAPI Plugin
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -27,8 +27,8 @@ import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVisitorContext;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.ValidationException;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.ValidationIssue;
 
-@Rule(key = AsyncApiParsingErrorCheck.CHECK_KEY)
-public class AsyncApiParsingErrorCheck extends AsyncApiCheck {
+@Rule(key = ParsingErrorCheck.CHECK_KEY)
+public class ParsingErrorCheck extends AsyncApiCheck {
 
   public static final String CHECK_KEY = "ParsingError";
 

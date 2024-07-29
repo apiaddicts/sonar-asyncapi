@@ -1,6 +1,6 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * doSonarAPI: SonarQube AsyncAPI Plugin
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,10 @@
  * A file being parsed by the scanner.
  */
 package org.apiaddicts.apitools.dosonarapi.api;
+
+/**
+ * A file being parsed by the scanner.
+ */
 
 public interface AsyncApiFile {
   String content();

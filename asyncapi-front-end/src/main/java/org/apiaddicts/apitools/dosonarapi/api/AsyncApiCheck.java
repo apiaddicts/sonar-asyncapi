@@ -1,6 +1,6 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * doSonarAPI: SonarQube AsyncAPI Plugin
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,6 @@ public class AsyncApiCheck extends AsyncApiVisitor {
     issues.clear();
     scanFile(context);
     return Collections.unmodifiableList(new ArrayList<>(issues));
-    
   }
 
   /**

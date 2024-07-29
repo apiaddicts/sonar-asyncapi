@@ -1,0 +1,22 @@
+asyncapi: '2.1.0'
+info:
+  title: Example Messaging API
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        contentType: 'application/json'
+        payload:
+          type: object
+          properties:
+            name:
+              type: string
+  assa/signedup:
+    subscribe:
+      message:
+        contentType: 'application/json'
+        payload:
+          type: object
+          properties:
+            name:
+              type: string

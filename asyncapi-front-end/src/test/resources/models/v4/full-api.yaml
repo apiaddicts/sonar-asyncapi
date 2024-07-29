@@ -1,0 +1,120 @@
+asyncapi: '2.3.0'
+info:
+  version: '1.0.0'
+  title: Sample AsyncAPI
+  description: A sample API that uses a petstore as an example to demonstrate features in the AsyncAPI 2.3.0 specification
+  termsOfService: http://example.com/terms/
+  contact:
+    name: API Support
+    url: http://www.example.com/support
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  production:
+    url: api.example.com
+    protocol: https
+    description: Production server
+
+channels:
+  pets:
+    description: Channel for pet events
+    publish:
+      operationId: petAdded
+      summary: Notify about a new pet
+      message:
+        contentType: application/json
+        headers:
+          type: object
+          properties:
+            Authorization:
+              type: string
+        payload:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+          required:
+            - id
+            - name
+  'pets/{id}':
+    description: Channel for specific pet events
+    publish:
+      operationId: petUpdated
+      summary: Notify about an updated pet
+      message:
+        contentType: application/json
+        headers:
+          type: object
+          properties:
+            Authorization:
+              type: string
+        payload:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+          required:
+            - id
+            - name
+
+components:
+  messages:
+    PetAdded:
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          Authorization:
+            type: string
+      payload:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+        required:
+          - id
+          - name
+
+  schemas:
+    Pet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      required:
+        - id
+        - name
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      required:
+        - code
+        - message
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    apiKey:
+      type: apiKey
+      name: api_key
+      in: header
+
+externalDocs:
+  description: Find more info here
+  url: http://example.com

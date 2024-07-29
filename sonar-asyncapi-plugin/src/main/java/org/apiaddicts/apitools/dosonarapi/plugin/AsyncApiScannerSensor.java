@@ -1,6 +1,6 @@
 /*
  * doSonarAPI: SonarQube AsyncAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -64,15 +64,20 @@ public class AsyncApiScannerSensor implements Sensor {
   @Override
   public void execute(SensorContext context) {
     FilePredicates p = context.fileSystem().predicates();
+    scanFiles(context, p);
+  }
+
+  public void scanFiles(SensorContext context, FilePredicates p) {
     Iterable<InputFile> it = context.fileSystem().inputFiles(
       p.and(p.hasType(InputFile.Type.MAIN),
-        p.hasLanguage(AsyncApi.KEY)));
+        p.hasLanguage(AsyncApi.KEY)
+        ));
     List<InputFile> list = new ArrayList<>();
     it.forEach(list::add);
     List<InputFile> inputFiles = Collections.unmodifiableList(list);
 
     if (!inputFiles.isEmpty()) {
-      AsyncApiAnalyzer scanner = new AsyncApiAnalyzer(context, checks, fileLinesContextFactory, noSonarFilter, inputFiles);
+      AsyncApiAnalyzer scanner = new AsyncApiAnalyzer(context, checks, fileLinesContextFactory, noSonarFilter, inputFiles/*, isV2*/);
       LOGGER.info("AsyncAPI Scanner called for the following files: {}.", inputFiles);
       scanner.scanFiles();
     }

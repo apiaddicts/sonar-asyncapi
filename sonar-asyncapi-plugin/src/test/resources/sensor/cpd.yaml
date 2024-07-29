@@ -1,0 +1,9 @@
+asyncapi: '2.0.0'
+info:
+  version: 1.0.0
+  title: AsyncAPI Petstore
+servers:
+  - url: ws://petstore.swagger.io/v1
+    protocol: amqp
+channels:
+  /pets: {}

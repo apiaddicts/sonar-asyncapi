@@ -1,0 +1,52 @@
+[
+  {
+    "channel_name": "vimeoEvents",
+    "channel_description": "Events related to Vimeo channel activities.",
+    "operations": [
+      {
+        "operation_type": "subscribe",
+        "description": "Subscribe to Vimeo updates."
+      }
+    ]
+  },
+  {
+    "channel_name": "twitterFeed",
+    "channel_description": "Twitter feed updates.",
+    "operations": [
+      {
+        "operation_type": "subscribe",
+        "description": "Receive tweets as they are published."
+      }
+    ]
+  },
+  {
+    "channel_name": "collegeHumorEvents",
+    "channel_description": "College Humor video events.",
+    "operations": [
+      {
+        "operation_type": "subscribe",
+        "description": "Updates when new videos are posted."
+      }
+    ]
+  },
+  {
+    "channel_name": "flickrPhotos",
+    "channel_description": "Photo updates from Flickr.",
+    "operations": [
+      {
+        "operation_type": "subscribe",
+        "description": "Get notifications for new photos."
+      }
+    ]
+  },
+  {
+    "channel_name": "youtubeVideos",
+    "channel_description": "Updates on new YouTube videos.",
+    "operations": [
+      {
+        "operation_type": "subscribe",
+        "description": "Receive updates when new videos are uploaded."
+      }
+    ]
+  }
+]

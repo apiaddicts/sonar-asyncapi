@@ -1,0 +1,15 @@
+myCallback:
+  $ref: "http://example.com/callback"
+  subscribe:
+    operationId: subscribeOperation
+    summary: Subscribe operation summary
+    description: Subscribe operation description
+    message:
+      description: Message description
+      payload:
+        type: object
+        properties:
+          name:
+            type: string
+          age:
+            type: integer

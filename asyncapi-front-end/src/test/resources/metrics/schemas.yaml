@@ -1,0 +1,29 @@
+asyncapi: '2.0.0'
+info:
+  version: 1.0.0
+  title: AsyncAPI Petstore
+servers:
+  - url: ws://petstore.swagger.io/v1
+    protocol: amqp
+channels:
+  /pets:
+    subscribe:
+      summary: Get pet information
+      operationId: getPets
+      message:
+        contentType: application/json
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pet'
+    publish:
+      summary: Create a pet
+      operationId: createPets
+      message:
+        contentType: application/json
+        payload:
+          $ref: '#/components/schemas/Pet'
+components:
+  schemas:
+    Pet:
+      type: object

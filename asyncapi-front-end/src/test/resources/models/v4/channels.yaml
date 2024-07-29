@@ -1,0 +1,15 @@
+myChannel:
+  description: A simple channel description
+  publish:
+    operationId: publishOperation
+    summary: publish summary
+    description: publish description
+    message:
+      description: Message description
+      payload:
+        type: object
+        properties:
+          name:
+            type: string
+          age:
+            type: integer

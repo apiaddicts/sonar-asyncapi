@@ -1,17 +1,16 @@
 {
-    "title": "ParsingError",
-    "type": "CODE_SMELL",
+    "title": "AsyncAPI file cannot be parsed",
+    "type": "BUG",
     "status": "ready",
     "remediation": {
       "func": "Constant\/Issue",
-      "constantCost": "5mn"
+      "constantCost": "30min"
     },
     "tags": [
-      "bad-practice",
-      "readability",
-      "should"
+      "suspicious"
     ],
-    "defaultSeverity": "Minor",
+    "defaultSeverity": "Blocker",
     "ruleSpecification": "",
-    "sqKey": "DeclaredTag"
+    "sqKey": "ParsingError"
   }
+  

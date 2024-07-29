@@ -1,6 +1,6 @@
 /*
- * doSonarAPI: SonarQube OpenAPI Plugin
- * Copyright (C) 2021-2022 Apiaddicts
+ * doSonarAPI: SonarQube AsyncAPI Plugin
+ * Copyright (C) 2024-2024 Apiaddicts
  * contacta AT apiaddicts DOT org
  *
  * This program is free software; you can redistribute it and/or
@@ -30,10 +30,10 @@ public final class AsyncApiCheckList {
 
   public static List<Class<?>> getChecks() {
     return Arrays.asList(
-      ChannelMaskingCheck.class,
-      AsyncApiParsingErrorCheck.class,
+      ParsingErrorCheck.class,
       SummaryCapitalCheck.class,
-      InfoDescriptionFormatCheck.class
+      InfoDescriptionFormatCheck.class,
+      ChannelAmbiguityCheck.class
           );
   }
 }

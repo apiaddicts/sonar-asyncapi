@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.apiaddicts.apitools.dosonarapi</groupId>
-        <artifactId>dosonarapi</artifactId>
+        <artifactId>dosonarapi-asyncapi</artifactId>
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -10,7 +10,7 @@
 
     <artifactId>asyncapi-its</artifactId>
     <name>AsyncAPI :: Integration Tests</name>
-    <inceptionYear>2021</inceptionYear>
+    <inceptionYear>2024</inceptionYear>
 
     <properties>
         <surefire.argLine>-server</surefire.argLine>

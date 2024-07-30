@@ -8,13 +8,13 @@
   </parent>
 
   <groupId>org.apiaddicts.apitools.dosonarapi</groupId>
-  <artifactId>dosonarapi</artifactId>
-  <version>1.1.0</version>
+  <artifactId>dosonarapi-asyncapi</artifactId>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <name>SonarAsyncAPI</name>
   <description>Code Analyze for AsyncAPI</description>
-  <inceptionYear>2021</inceptionYear>
+  <inceptionYear>2024</inceptionYear>
   <organization>
     <name>Apiaddicts</name>
     <url>https://apiaddicts.org</url>
@@ -58,7 +58,7 @@
     <license.title>doSonarAPI: SonarQube AsyncAPI Plugin</license.title>
     <license.owner>Apiaddicts</license.owner>
     <license.mailto>contacta AT apiaddicts DOT org</license.mailto>
-    <license.years>${project.inceptionYear}-2022</license.years>
+    <license.years>${project.inceptionYear}-2024</license.years>
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
     <sonar.pluginClass>org.apiaddicts.apitools.dosonarapi.plugin.AsyncApiPlugin</sonar.pluginClass>
     <sonar.pluginName>doSonarAPI</sonar.pluginName>

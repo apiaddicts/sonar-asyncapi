@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>org.apiaddicts.apitools.dosonarapi</groupId>
-    <artifactId>dosonarapi</artifactId>
+    <artifactId>dosonarapi-asyncapi</artifactId>
     <version>1.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>

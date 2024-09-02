@@ -29,6 +29,8 @@ public class FullApiTest extends BaseNodeTest<AsyncApiGrammar> {
         JsonNode node = parseResource(AsyncApiGrammar.ROOT, "/models/v4/full-api.yaml");
 
         assertEquals("2.3.0", node, "/asyncapi");
+        assertEquals("urn:example:rpcclient", node, "/id");
+        assertEquals("application/json", node, "/defaultContentType");
 
         // Verify info section
         assertEquals("Sample AsyncAPI", node, "/info/title");

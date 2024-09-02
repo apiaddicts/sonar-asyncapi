@@ -1,15 +1,31 @@
 myChannel:
+  servers: production
   description: A simple channel description
   publish:
     operationId: publishOperation
     summary: publish summary
     description: publish description
     message:
-      description: Message description
-      payload:
-        type: object
-        properties:
-          name:
-            type: string
-          age:
-            type: integer
+        name: dimLight
+        title: hola
+        summary: Command a particular streetlight to dim the lights.
+        contentType: application/json
+        headers:
+          type: object
+          properties:
+            my-app-header:
+              type: integer
+              minimum: 0
+              maximum: 100
+        payload:
+          type: object
+          properties:
+            percentage:
+              type: integer
+              description: Percentage to which the light should be dimmed to.
+              minimum: 0
+              maximum: 100
+            sentAt:
+              type: string
+              format: date-time
+              description: Date and time when the message was sent.

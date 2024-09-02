@@ -1,4 +1,6 @@
 asyncapi: '2.3.0'
+id: 'urn:example:rpcclient'
+defaultContentType: application/json
 info:
   version: '1.0.0'
   title: Sample AsyncAPI

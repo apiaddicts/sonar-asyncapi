@@ -102,7 +102,9 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     b.setRootRule(ROOT);
 
     b.rule(ROOT).is(b.object(
-      b.mandatoryProperty("asyncapi", b.firstOf("2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0")),
+      b.mandatoryProperty("asyncapi", b.firstOf("2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0", "2.5.0", "2.6.0")),
+      b.property("id", b.string()),
+      b.property("defaultContentType", b.string()),
       b.mandatoryProperty("info", INFO),
       b.property("servers", SERVERS),
       b.mandatoryProperty("channels", CHANNELS),
@@ -132,7 +134,6 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     return b;
   }
 
-  // Tags
   private static void buildTags(YamlGrammarBuilder b) {
     b.rule(TAG).is(b.firstOf(
       b.string(),
@@ -215,6 +216,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("description", DESCRIPTION),
       b.property("subscribe", OPERATION),
       b.property("publish", OPERATION),
+      b.property("servers", b.string()),
       b.property("parameters", b.object(
         b.patternProperty(".*", PARAMETER))),
       b.property("bindings", CHANNEL_BINDINGS),
@@ -310,6 +312,10 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
   private static void buildMessages(YamlGrammarBuilder b) {
     b.rule(MESSAGE).is(b.object(
       b.property("name", b.string()),
+      b.property("title", b.string()),
+      b.property("summary", b.string()),
+      b.property("messageId", b.anything()),
+      b.property("location", b.string()),
       b.property("contentType", b.string()),
       b.property("headers", b.firstOf(REF, SCHEMA)),
       b.property("payload", b.firstOf(REF, SCHEMA)),

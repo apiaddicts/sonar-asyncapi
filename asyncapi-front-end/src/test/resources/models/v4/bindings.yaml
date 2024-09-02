@@ -1,6 +1,7 @@
 mqtt:
   qos: 2
   retain: false
+  version: '0.1.0'
 amqp:
   contentEncoding: gzip
   messageType: text

@@ -1,5 +1,5 @@
 
-# 🛠️ Sonar AsyncApi (plugin) ![Release](https://img.shields.io/badge/release-1.0.0-purple) ![Swagger](https://img.shields.io/badge/-asyncapi-%2523Clojure?style=flat&logo=swagger&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white)  [![License: LGPL v3](https://img.shields.io/badge/license-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) 
+# 🛠️ Sonar AsyncApi (plugin) ![Release](https://img.shields.io/badge/release-1.0.1-purple) ![Swagger](https://img.shields.io/badge/-asyncapi-%2523Clojure?style=flat&logo=swagger&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white)  [![License: LGPL v3](https://img.shields.io/badge/license-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) 
 
 Sonar AsyncApi (plugin) is a code analyzer for AsyncAPI specifications. Starting the project from scratch, with support from the Apiaddicts community.
 
@@ -32,7 +32,7 @@ Feel free to drop by and greet us on our GitHub discussion or Discord chat. You 
 
 ## ⚙️ Features
 
-* Full compatibility with AsyncAPI v2.0.0, v2.1.0, v2.2.0, v2.3.0 and v2.4.0
+* Full compatibility with AsyncAPI v2.0.0, v2.1.0, v2.2.0, v2.3.0, v2.4.0, 2.5.0 and 2.6.0
 
 <a name="install"></a>
 ## Installing

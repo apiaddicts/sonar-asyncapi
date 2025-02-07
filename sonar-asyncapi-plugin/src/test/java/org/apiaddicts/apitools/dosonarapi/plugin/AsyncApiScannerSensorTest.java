@@ -89,11 +89,11 @@ public class AsyncApiScannerSensorTest {
 
     String key = "moduleKey:file1.yaml";
 
-    assertThat(context.measure(key, CoreMetrics.NCLOC).value()).isEqualTo(36);
+    assertThat(context.measure(key, CoreMetrics.NCLOC).value()).isEqualTo(35);
     assertThat(context.measure(key, AsyncApiMetrics.CHANNELS_COUNT).value()).isEqualTo(2); 
     assertThat(context.measure(key, AsyncApiMetrics.ASYNCAPI_OPERATIONS_COUNT).value()).isEqualTo(2);
     assertThat(context.measure(key, CoreMetrics.COMPLEXITY).value()).isEqualTo(14);
-    assertThat(context.measure(key, CoreMetrics.COMMENT_LINES).value()).isEqualTo(1);
+    assertThat(context.measure(key, CoreMetrics.COMMENT_LINES).value()).isEqualTo(3);
 
     assertThat(context.allIssues()).hasSize(0);
 

@@ -22,11 +22,13 @@ channels:
         payload:
           type: object
           properties:
-          #holahjola
+          # comment
             name:
               type: string
+# this is a comment
 components:
   schemas:
+    ## this is another comment
     Pet:
       type: object
       properties:

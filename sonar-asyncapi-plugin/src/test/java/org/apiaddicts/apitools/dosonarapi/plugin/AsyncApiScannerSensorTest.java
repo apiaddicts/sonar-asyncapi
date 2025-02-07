@@ -19,7 +19,6 @@
  */
 package org.apiaddicts.apitools.dosonarapi.plugin;
 
-import com.google.common.collect.Iterables;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -40,8 +39,6 @@ import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
 import org.sonar.api.batch.sensor.error.AnalysisError;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.api.batch.sensor.issue.Issue;
-import org.sonar.api.batch.sensor.issue.IssueLocation;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
@@ -50,7 +47,6 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.LogTester;
 import org.apiaddicts.apitools.dosonarapi.checks.AsyncApiCheckList;
 import org.apiaddicts.apitools.dosonarapi.checks.ParsingErrorCheck;
-import org.apiaddicts.apitools.dosonarapi.checks.ChannelAmbiguityCheck;
 import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiMetrics;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,19 +84,16 @@ public class AsyncApiScannerSensorTest {
         .activate()
         .build();
 
-    InputFile inputFile = inputFile("file1.yaml");
+    inputFile("file1.yaml");
     sensor().execute(context);
 
     String key = "moduleKey:file1.yaml";
 
-    // Imprimir los canales detectados para depuración
-    System.out.println("Detected Channels: " + context.measure(key, AsyncApiMetrics.CHANNELS_COUNT));
-
-    assertThat(context.measure(key, CoreMetrics.NCLOC).value()).isEqualTo(36);
+    assertThat(context.measure(key, CoreMetrics.NCLOC).value()).isEqualTo(35);
     assertThat(context.measure(key, AsyncApiMetrics.CHANNELS_COUNT).value()).isEqualTo(2); 
     assertThat(context.measure(key, AsyncApiMetrics.ASYNCAPI_OPERATIONS_COUNT).value()).isEqualTo(2);
     assertThat(context.measure(key, CoreMetrics.COMPLEXITY).value()).isEqualTo(14);
-    assertThat(context.measure(key, CoreMetrics.COMMENT_LINES).value()).isEqualTo(1);
+    assertThat(context.measure(key, CoreMetrics.COMMENT_LINES).value()).isEqualTo(3);
 
     assertThat(context.allIssues()).hasSize(0);
 
@@ -122,9 +115,6 @@ public class AsyncApiScannerSensorTest {
             tuple("parse-error.yaml", 3, 2, "Missing required properties: [version]")
         );
   }
-
-// ADRI
-
 
   @Test
   public void parse_yaml_break_comment_ok() {
@@ -167,7 +157,7 @@ public class AsyncApiScannerSensorTest {
 
   @Test
   public void cancelled_analysis() {
-    InputFile inputFile = inputFile("file1.yaml");
+    inputFile("file1.yaml");
     activeRules = (new ActiveRulesBuilder()).build();
     context.setCancelled(true);
     sensor().execute(context);

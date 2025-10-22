@@ -24,33 +24,33 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiCheck;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiFile;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVisitorContext;
+import org.apiaddicts.apitools.dosonarapi.api.IssueLocation;
+import org.apiaddicts.apitools.dosonarapi.api.PreciseIssue;
 import org.apiaddicts.apitools.dosonarapi.asyncapi.AsyncApiConfiguration;
+import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiFileLinesVisitor;
+import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiFileMetrics;
+import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiMetrics;
+import org.apiaddicts.apitools.dosonarapi.asyncapi.parser.AsyncApiParser;
 import org.apiaddicts.apitools.dosonarapi.plugin.cpd.AsyncApiCpdAnalyzer;
+import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
+import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.ValidationException;
+import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.YamlParser;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.TextRange;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.issue.NoSonarFilter;
+import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
-import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
-import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiFileLinesVisitor;
-import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiFileMetrics;
-import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiMetrics;
-import org.apiaddicts.apitools.dosonarapi.asyncapi.parser.AsyncApiParser;
-import org.apiaddicts.apitools.dosonarapi.api.IssueLocation;
-import org.apiaddicts.apitools.dosonarapi.api.AsyncApiCheck;
-import org.apiaddicts.apitools.dosonarapi.api.AsyncApiFile;
-import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVisitorContext;
-import org.apiaddicts.apitools.dosonarapi.api.PreciseIssue;
-import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
-import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.ValidationException;
-import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.YamlParser;
 
 public class AsyncApiAnalyzer {
     private static final Logger LOG = Loggers.get(AsyncApiAnalyzer.class);
@@ -131,6 +131,8 @@ public class AsyncApiAnalyzer {
           for (ValidationException cause : e.getCauses()) {
             dumpException(cause, inputFile);
           }
+          throw new IllegalStateException("Validation failed for file: " + inputFile.filename() + " - " + e.getMessage(), e);
+
         } catch (RecognitionException e) {
           visitorContext = new AsyncApiVisitorContext(asyncApiFile, e);
           LOG.error("Unable to parse file in recognition: " + inputFile.filename() + "\"\n" + e.getMessage());

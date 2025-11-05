@@ -19,8 +19,8 @@
  */
 package org.apiaddicts.apitools.dosonarapi.api.v4;
 
-import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.YamlGrammarBuilder;
+import org.sonar.sslr.grammar.GrammarRuleKey;
 
 @java.lang.SuppressWarnings("squid:S1192") // Voluntarily ignoring string constants redefinitions in this file
 public enum AsyncApiGrammar implements GrammarRuleKey {
@@ -322,6 +322,8 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("description", DESCRIPTION),
       b.property("examples", b.array(
         b.object(
+          b.property("name", b.anything()),
+          b.property("summary", b.anything()),
           b.property("headers", b.object(
             b.patternProperty(".*", b.anything()))),
           b.property("payload", b.object(

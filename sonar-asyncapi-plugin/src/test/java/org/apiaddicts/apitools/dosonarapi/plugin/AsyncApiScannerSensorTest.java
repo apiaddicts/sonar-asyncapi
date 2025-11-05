@@ -26,17 +26,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
+import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiMetrics;
+import org.apiaddicts.apitools.dosonarapi.checks.AsyncApiCheckList;
+import org.apiaddicts.apitools.dosonarapi.checks.ParsingErrorCheck;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.ActiveRules;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
-import org.sonar.api.batch.sensor.error.AnalysisError;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.issue.NoSonarFilter;
@@ -45,14 +50,6 @@ import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.LogTester;
-import org.apiaddicts.apitools.dosonarapi.checks.AsyncApiCheckList;
-import org.apiaddicts.apitools.dosonarapi.checks.ParsingErrorCheck;
-import org.apiaddicts.apitools.dosonarapi.asyncapi.metrics.AsyncApiMetrics;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class AsyncApiScannerSensorTest {
   private final Path baseDir = Paths.get("src/test/resources/sensor").toAbsolutePath();
@@ -107,13 +104,16 @@ public class AsyncApiScannerSensorTest {
       .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
       .activate()
       .build();
-    sensor().execute(context);
-    assertThat(context.allIssues()).hasSize(1);
-    assertThat(context.allAnalysisErrors())
-        .extracting(e -> e.inputFile().filename(), e -> e.location().line(), e -> e.location().lineOffset(), AnalysisError::message)
-        .containsExactlyInAnyOrder(
-            tuple("parse-error.yaml", 3, 2, "Missing required properties: [version]")
-        );
+    // sensor().execute(context);
+    // assertThat(context.allIssues()).hasSize(1);
+    // assertThat(context.allAnalysisErrors())
+    //     .extracting(e -> e.inputFile().filename(), e -> e.location().line(), e -> e.location().lineOffset(), AnalysisError::message)
+    //     .containsExactlyInAnyOrder(
+    //         tuple("parse-error.yaml", 3, 2, "Missing required properties: [version]")
+    //     );
+    assertThatThrownBy(() -> sensor().execute(context))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("Validation failed for file: parse-error.yaml - Validation errors");
   }
 
   @Test

@@ -1,0 +1,11 @@
+schemaFormat: "application/vnd.apache.avro;version=1.9.0"
+schema:
+  type: record
+  name: UserSignedUp
+  namespace: com.company
+  doc: User sign-up information
+  fields:
+    - name: userId
+      type: int
+    - name: userEmail
+      type: string

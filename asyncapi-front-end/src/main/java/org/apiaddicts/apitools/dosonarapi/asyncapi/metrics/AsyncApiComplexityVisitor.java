@@ -31,9 +31,9 @@ public class AsyncApiComplexityVisitor extends AsyncApiVisitor {
 
   private static final HashSet<AstNodeType> COMPLEXITY_TYPES = Sets.newHashSet(
       AsyncApiGrammar.CHANNEL, AsyncApiGrammar.OPERATION, AsyncApiGrammar.MESSAGE,
-      AsyncApiGrammar.SCHEMA, AsyncApiGrammar.PARAMETER,
+      AsyncApiGrammar.SCHEMA, AsyncApiGrammar.PAYLOAD_SCHEMA, AsyncApiGrammar.PARAMETER,
       AsyncApiGrammar.CHANNEL, AsyncApiGrammar.OPERATION, AsyncApiGrammar.MESSAGE,
-      AsyncApiGrammar.SCHEMA, AsyncApiGrammar.PARAMETER
+      AsyncApiGrammar.SCHEMA, AsyncApiGrammar.PAYLOAD_SCHEMA, AsyncApiGrammar.PARAMETER
   );
   private int complexity;
 

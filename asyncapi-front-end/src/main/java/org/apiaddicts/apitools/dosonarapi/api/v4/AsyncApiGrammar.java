@@ -93,7 +93,8 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
   CORRELATION_ID,
   BINDING_DEFINITION,
   HEADERS_SCHEMA,
-  PAYLOAD_SCHEMA;
+  PAYLOAD_SCHEMA,
+  OPERATIONS;
 
   private static final String EXTENSION_PATTERN = "^x-.*";
 
@@ -102,12 +103,13 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     b.setRootRule(ROOT);
 
     b.rule(ROOT).is(b.object(
-      b.mandatoryProperty("asyncapi", b.firstOf("2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0", "2.5.0", "2.6.0")),
+      b.mandatoryProperty("asyncapi", b.firstOf("2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0", "2.5.0", "2.6.0", "3.0.0", "3.1.0")),
       b.property("id", b.string()),
       b.property("defaultContentType", b.string()),
       b.mandatoryProperty("info", INFO),
       b.property("servers", SERVERS),
-      b.mandatoryProperty("channels", CHANNELS),
+      b.property("channels", CHANNELS),
+      b.property("operations", OPERATIONS),
       b.property("components", COMPONENTS),
       b.property("tags", b.array(TAG)),
       b.property("externalDocs", EXTERNAL_DOC),
@@ -130,6 +132,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     buildSecurityDefinitions(b);
     buildTags(b);
     buildCallbacks(b);
+    buildBindings(b);
 
     return b;
   }
@@ -214,9 +217,12 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     b.rule(CHANNEL).is(b.object(
       b.property("$ref", b.string()),
       b.property("description", DESCRIPTION),
+      b.property("address", b.string()),
       b.property("subscribe", OPERATION),
       b.property("publish", OPERATION),
-      b.property("servers", b.string()),
+      b.property("messages", b.object(
+        b.patternProperty(".*", b.firstOf(REF, MESSAGE)))),
+      b.property("servers", b.firstOf(b.string(), b.array(b.firstOf(REF, b.string())))),
       b.property("parameters", b.object(
         b.patternProperty(".*", PARAMETER))),
       b.property("bindings", CHANNEL_BINDINGS),
@@ -225,12 +231,18 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
 
     b.rule(OPERATION).is(b.object(
       b.property("operationId", b.string()),
+      b.property("action", b.string()),
+      b.property("channel", b.firstOf(REF, b.anything())),
       b.property("summary", b.string()),
       b.property("description", DESCRIPTION),
       b.property("tags", b.array(TAG)),
       b.property("externalDocs", EXTERNAL_DOC),
       b.property("message", b.firstOf(REF, MESSAGE)),
       b.property("bindings", OPERATION_BINDINGS),
+      b.patternProperty(EXTENSION_PATTERN, b.anything())));
+
+    b.rule(OPERATIONS).is(b.object(
+      b.patternProperty(".*", OPERATION),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
   }
 
@@ -310,6 +322,13 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
 
   // Messages
   private static void buildMessages(YamlGrammarBuilder b) {
+    b.rule(PAYLOAD_SCHEMA).is(b.firstOf(
+      REF,
+      b.object(
+        b.mandatoryProperty("schemaFormat", b.string()),
+        b.property("schema", b.anything())),
+      SCHEMA));
+
     b.rule(MESSAGE).is(b.object(
       b.property("name", b.string()),
       b.property("title", b.string()),
@@ -318,7 +337,8 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("location", b.string()),
       b.property("contentType", b.string()),
       b.property("headers", b.firstOf(REF, SCHEMA)),
-      b.property("payload", b.firstOf(REF, SCHEMA)),
+      b.property("payload", PAYLOAD_SCHEMA),
+      b.property("bindings", MESSAGE_BINDINGS),
       b.property("description", DESCRIPTION),
       b.property("examples", b.array(
         b.object(
@@ -387,12 +407,14 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
   // Servers
   private static void buildServers(YamlGrammarBuilder b) {
     b.rule(SERVER).is(b.object(
-      b.mandatoryProperty("url", b.string()),
+      b.property("url", b.string()),
+      b.property("host", b.string()),
       b.mandatoryProperty("protocol", b.string()),
       b.property("description", DESCRIPTION),
       b.property("variables", b.object(
         b.patternProperty(".*", SERVER_VARIABLE))),
       b.property("security", b.array(SECURITY_REQUIREMENT)),
+      b.property("bindings", SERVER_BINDINGS),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
 
     b.rule(SERVER_VARIABLE).is(b.object(
@@ -426,6 +448,17 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.mandatoryProperty("name", b.string()),
       b.property("url", b.string()),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
+  }
+
+  private static void buildBindings(YamlGrammarBuilder b) {
+    b.rule(SERVER_BINDINGS).is(b.object(b.patternProperty(".*", b.anything())));
+    b.rule(CHANNEL_BINDINGS).is(b.object(b.patternProperty(".*", b.anything())));
+    b.rule(OPERATION_BINDINGS).is(b.object(b.patternProperty(".*", b.anything())));
+    b.rule(MESSAGE_BINDINGS).is(b.object(b.patternProperty(".*", b.anything())));
+    b.rule(SERVER_BINDING).is(b.object(b.patternProperty(".*", b.anything())));
+    b.rule(CHANNEL_BINDING).is(b.object(b.patternProperty(".*", b.anything())));
+    b.rule(OPERATION_BINDING).is(b.object(b.patternProperty(".*", b.anything())));
+    b.rule(MESSAGE_BINDING).is(b.object(b.patternProperty(".*", b.anything())));
   }
 
   // Callbacks

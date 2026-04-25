@@ -1,0 +1,22 @@
+asyncapi: "2.6.0"
+info:
+  title: API With Invalid Summary
+  version: 1.0.0
+  summary: this summary starts with lowercase
+
+channels:
+  user/created:
+    subscribe:
+      operationId: onUserCreated
+      summary: subscribe to user creation without period
+      message:
+        payload:
+          type: object
+
+  user/updated:
+    publish:
+      operationId: publishUserUpdated
+      summary: publish user update without proper format
+      message:
+        payload:
+          type: object

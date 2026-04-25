@@ -1,0 +1,106 @@
+asyncapi: "2.6.0"
+info:
+  title: User Service API
+  version: 1.0.0
+  description: Complete AsyncAPI 2.6 example
+  contact:
+    name: API Support
+    email: support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  x-logo:
+    url: https://example.com/logo.png
+
+servers:
+  - url: mqtt://broker.example.com:1883
+    protocol: mqtt
+    description: Production MQTT broker
+    variables:
+      port:
+        default: "1883"
+
+  - url: mqtt://test-broker.example.com:1883
+    protocol: mqtt
+    description: Test MQTT broker
+
+defaultContentType: application/json
+
+channels:
+  user/created:
+    description: Channel for user creation events
+    subscribe:
+      operationId: onUserCreated
+      summary: Subscribe to user creation events.
+      description: Receives user creation notifications
+      tags:
+        - name: users
+          description: User operations
+      message:
+        name: userCreated
+        title: User Created Event
+        summary: Notification of a new user.
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+              description: User ID
+            email:
+              type: string
+              format: email
+            createdAt:
+              type: string
+              format: date-time
+
+  user/updated:
+    description: Channel for user update events
+    publish:
+      operationId: publishUserUpdated
+      summary: Publish user update events.
+      tags:
+        - name: users
+      message:
+        name: userUpdated
+        summary: Notification of a user update.
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+            email:
+              type: string
+            updatedAt:
+              type: string
+              format: date-time
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: api_key
+      in: header
+
+tags:
+  - name: users
+    description: User-related operations
+    externalDocs:
+      url: https://example.com/docs/users
+
+externalDocs:
+  description: AsyncAPI documentation
+  url: https://example.com/docs/asyncapi
+
+x-custom-extension: This is a custom extension

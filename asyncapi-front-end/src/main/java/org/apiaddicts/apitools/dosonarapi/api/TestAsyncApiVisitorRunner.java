@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVersion;
 import org.apiaddicts.apitools.dosonarapi.asyncapi.AsyncApiConfiguration;
 import org.apiaddicts.apitools.dosonarapi.asyncapi.parser.AsyncApiv4Parser;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
@@ -67,10 +68,20 @@ public class TestAsyncApiVisitorRunner {
     try {
       String content = getContent(file);
       JsonNode rootTree = parser.parse(content);
-      return new AsyncApiVisitorContext(rootTree, parser.getIssues(), asyncApiFile);
+      AsyncApiVersion version = detectVersion(rootTree);
+      return new AsyncApiVisitorContext(rootTree, parser.getIssues(), asyncApiFile, version);
     } catch (IOException ex) {
       throw new IllegalStateException("Error reading file", ex);
     }
+  }
+
+  private static AsyncApiVersion detectVersion(JsonNode rootTree) {
+    if (rootTree == null) return AsyncApiVersion.v2_x;
+    JsonNode versionNode = rootTree.get("asyncapi");
+    if (versionNode == null || versionNode.isMissing()) return AsyncApiVersion.v2_x;
+    String version = versionNode.getTokenValue();
+    if (version != null && version.startsWith("3.")) return AsyncApiVersion.v3_x;
+    return AsyncApiVersion.v2_x;
   }
 
   private static String getContent(File file) throws IOException {

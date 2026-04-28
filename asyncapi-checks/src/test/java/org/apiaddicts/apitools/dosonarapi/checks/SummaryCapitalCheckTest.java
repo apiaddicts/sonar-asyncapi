@@ -27,4 +27,14 @@ public class SummaryCapitalCheckTest {
   public void verify_summary_capital_in_v4() {
     AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/summary-capital.yaml", new SummaryCapitalCheck());
   }
+
+  @Test
+  public void verify_summary_capital_in_v3() {
+    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/summary-capital-v3.yaml", new SummaryCapitalCheck());
+  }
+
+  @Test
+  public void verify_no_false_positives_on_avro_v3() {
+    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/avro-v3.yaml", new SummaryCapitalCheck());
+  }
 }

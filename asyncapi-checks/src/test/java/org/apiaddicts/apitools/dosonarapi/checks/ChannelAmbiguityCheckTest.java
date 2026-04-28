@@ -41,6 +41,11 @@ public class ChannelAmbiguityCheckTest {
   }
 
   @Test
+  public void verify_channel_ambiguity_v3() {
+    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/channel-ambiguity-v3.yaml", new ChannelAmbiguityCheck());
+  }
+
+  @Test
   public void channels_of_different_length_dont_conflict() {
     assertEquals(CLEAR, hasConflicts("pets", "animals/{animalId}/name"));
     assertEquals(CLEAR, hasConflicts("pets/{petId}", "pets/1234"));

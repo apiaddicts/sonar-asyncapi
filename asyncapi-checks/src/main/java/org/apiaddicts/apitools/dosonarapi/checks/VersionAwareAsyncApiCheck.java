@@ -22,7 +22,7 @@ package org.apiaddicts.apitools.dosonarapi.checks;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiCheck;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiPathResolver;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVisitorContext;
-import org.apiaddicts.apitools.dosonarapi.plugin.AsyncApiVersion;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVersion;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
 
 public abstract class VersionAwareAsyncApiCheck extends AsyncApiCheck {
@@ -30,14 +30,14 @@ public abstract class VersionAwareAsyncApiCheck extends AsyncApiCheck {
   protected AsyncApiPathResolver pathResolver;
 
   @Override
-  public final void visitFile(AsyncApiVisitorContext context) {
+  public final void scanFile(AsyncApiVisitorContext context) {
     this.pathResolver = new AsyncApiPathResolver(context.rootTree(), context.getVersion());
     if (context.getVersion().isVersion2()) {
       visitFileV2(context);
     } else if (context.getVersion().isVersion3()) {
       visitFileV3(context);
     }
-    super.visitFile(context);
+    super.scanFile(context);
   }
 
   protected void visitFileV2(AsyncApiVisitorContext context) {
@@ -78,7 +78,7 @@ public abstract class VersionAwareAsyncApiCheck extends AsyncApiCheck {
 
   protected void visitServersV2(JsonNode serversNode) {
     if (serversNode != null && serversNode.isArray()) {
-      for (JsonNode server : serversNode.getElements()) {
+      for (JsonNode server : serversNode.elements()) {
         visitServerV2(server);
       }
     }

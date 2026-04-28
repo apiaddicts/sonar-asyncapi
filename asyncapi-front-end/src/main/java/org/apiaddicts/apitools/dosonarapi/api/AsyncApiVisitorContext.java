@@ -23,7 +23,7 @@ import com.sonar.sslr.api.RecognitionException;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
-import org.apiaddicts.apitools.dosonarapi.plugin.AsyncApiVersion;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVersion;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.ValidationIssue;
 

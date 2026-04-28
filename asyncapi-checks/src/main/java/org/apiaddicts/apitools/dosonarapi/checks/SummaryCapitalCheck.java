@@ -81,7 +81,7 @@ public class SummaryCapitalCheck extends AsyncApiCheck {
                     checkSummaryFormat(subscribeNode.get("summary"));
                 }
 
-                if (isAsyncApi3X(channelNode)) {
+                if (getContext() != null && getContext().getVersion().isVersion3()) {
                     checkV3Operations(operationNode);
                 }
             }
@@ -97,26 +97,6 @@ public class SummaryCapitalCheck extends AsyncApiCheck {
                 }
             }
         }
-    }
-
-    private boolean isAsyncApi3X(JsonNode node) {
-        JsonNode root = getRoot(node);
-        if (root != null) {
-            JsonNode versionNode = root.get("asyncapi");
-            if (versionNode != null) {
-                String version = versionNode.getTokenValue();
-                return version != null && version.startsWith("3.");
-            }
-        }
-        return false;
-    }
-
-    private JsonNode getRoot(JsonNode node) {
-        JsonNode current = node;
-        while (current != null && current.getParent() != null) {
-            current = current.getParent();
-        }
-        return current;
     }
 
     private void checkSummaryFormat(JsonNode summaryNode) {

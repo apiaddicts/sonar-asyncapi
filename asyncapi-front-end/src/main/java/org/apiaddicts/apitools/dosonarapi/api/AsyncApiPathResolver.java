@@ -19,7 +19,7 @@
  */
 package org.apiaddicts.apitools.dosonarapi.api;
 
-import org.apiaddicts.apitools.dosonarapi.plugin.AsyncApiVersion;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVersion;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
 
 public class AsyncApiPathResolver {

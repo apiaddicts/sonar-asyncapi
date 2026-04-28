@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiCheck;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiFile;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVersion;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVisitorContext;
 import org.apiaddicts.apitools.dosonarapi.api.IssueLocation;
 import org.apiaddicts.apitools.dosonarapi.api.PreciseIssue;

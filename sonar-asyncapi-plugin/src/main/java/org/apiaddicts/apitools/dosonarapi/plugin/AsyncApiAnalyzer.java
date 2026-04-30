@@ -127,7 +127,6 @@ public class AsyncApiAnalyzer {
           visitorContext = new AsyncApiVisitorContext(parser.parse(content), parser.getIssues(), asyncApiFile, version);
           saveMeasures(inputFile, visitorContext);
         } catch (ValidationException e) {
-          visitorContext = new AsyncApiVisitorContext(asyncApiFile, e);
           LOG.error("Error during file validation: " + inputFile.filename() + "\"\n" + e.formatMessage());
           for (ValidationException cause : e.getCauses()) {
             dumpException(cause, inputFile);
@@ -164,9 +163,9 @@ public class AsyncApiAnalyzer {
           if (version == null) return null;
 
           if (version.startsWith("3.")) {
-            return AsyncApiVersion.v3_x;
+            return AsyncApiVersion.V3_X;
           } else if (version.startsWith("2.")) {
-            return AsyncApiVersion.v2_x;
+            return AsyncApiVersion.V2_X;
           }
 
           return null;
@@ -181,7 +180,6 @@ public class AsyncApiAnalyzer {
      * sometimes, when an empty line is followed by a comment, it breaks the parser,
      * it also replaces tabs by spaces to avoid another parsing error
      *
-     * FIXME: Try to solve in the yaml parser lib
      */
     private String getContent(InputFile inputFile) throws IOException {
         String [] lines = inputFile.contents().split("\n");

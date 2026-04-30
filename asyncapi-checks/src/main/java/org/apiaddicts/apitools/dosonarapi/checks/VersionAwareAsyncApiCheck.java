@@ -53,11 +53,11 @@ public abstract class VersionAwareAsyncApiCheck extends AsyncApiCheck {
   protected void visitChannelsV2(JsonNode channelNode, JsonNode operationNode) {
     JsonNode publish = operationNode.get("publish");
     if (publish != null) {
-      visitOperationV2(operationNode.getPointer(), publish, "publish");
+      visitOperationV2(channelNode.getPointer(), publish, "publish");
     }
     JsonNode subscribe = operationNode.get("subscribe");
     if (subscribe != null) {
-      visitOperationV2(operationNode.getPointer(), subscribe, "subscribe");
+      visitOperationV2(channelNode.getPointer(), subscribe, "subscribe");
     }
   }
 
@@ -77,7 +77,7 @@ public abstract class VersionAwareAsyncApiCheck extends AsyncApiCheck {
   }
 
   protected void visitServersV2(JsonNode serversNode) {
-    if (serversNode != null && serversNode.isArray()) {
+    if (serversNode.isObject()) {
       for (JsonNode server : serversNode.elements()) {
         visitServerV2(server);
       }
@@ -85,7 +85,7 @@ public abstract class VersionAwareAsyncApiCheck extends AsyncApiCheck {
   }
 
   protected void visitServersV3(JsonNode serversNode) {
-    if (serversNode != null && serversNode.isObject()) {
+    if (serversNode.isObject()) {
       for (JsonNode server : serversNode.propertyMap().values()) {
         visitServerV3(server);
       }

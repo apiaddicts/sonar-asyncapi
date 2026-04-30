@@ -23,7 +23,6 @@ import com.sonar.sslr.api.RecognitionException;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
-import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVersion;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.JsonNode;
 import org.apiaddicts.apitools.dosonarapi.sslr.yaml.grammar.ValidationIssue;
 
@@ -36,7 +35,7 @@ public class AsyncApiVisitorContext {
   private final AsyncApiVersion version;
 
   public AsyncApiVisitorContext(JsonNode rootTree, List<ValidationIssue> issues, AsyncApiFile asyncApiFile) {
-    this(rootTree, asyncApiFile, issues, null, AsyncApiVersion.v2_x);
+    this(rootTree, asyncApiFile, issues, null, AsyncApiVersion.V2_X);
   }
 
   public AsyncApiVisitorContext(JsonNode rootTree, List<ValidationIssue> issues, AsyncApiFile asyncApiFile, AsyncApiVersion version) {
@@ -44,7 +43,7 @@ public class AsyncApiVisitorContext {
   }
 
   public AsyncApiVisitorContext(AsyncApiFile asyncApiFile, RecognitionException parsingException) {
-    this(null, asyncApiFile, Collections.emptyList(), parsingException, AsyncApiVersion.v2_x);
+    this(null, asyncApiFile, Collections.emptyList(), parsingException, AsyncApiVersion.V2_X);
   }
 
   private AsyncApiVisitorContext(@Nullable JsonNode rootTree, AsyncApiFile asyncApiFile, List<ValidationIssue> issues, @Nullable RecognitionException parsingException, AsyncApiVersion version) {

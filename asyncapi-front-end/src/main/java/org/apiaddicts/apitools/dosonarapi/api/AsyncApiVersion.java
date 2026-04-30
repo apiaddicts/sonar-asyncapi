@@ -20,8 +20,8 @@
 package org.apiaddicts.apitools.dosonarapi.api;
 
 public enum AsyncApiVersion {
-  v2_x("2.x"),
-  v3_x("3.x");
+  V2_X("2.x"),
+  V3_X("3.x");
 
   private final String label;
 
@@ -34,10 +34,10 @@ public enum AsyncApiVersion {
   }
 
   public boolean isVersion2() {
-    return this == v2_x;
+    return this == V2_X;
   }
 
   public boolean isVersion3() {
-    return this == v3_x;
+    return this == V3_X;
   }
 }

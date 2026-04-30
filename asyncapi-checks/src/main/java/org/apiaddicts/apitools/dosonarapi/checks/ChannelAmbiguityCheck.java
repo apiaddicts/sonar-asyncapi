@@ -112,8 +112,7 @@ public class ChannelAmbiguityCheck extends AsyncApiCheck {
     ArrayList<List<Bucket>> result = new ArrayList<>();
     for (JsonNode channelProperty : channelProperties) {
       JsonNode addressNode = channelProperty.get("address");
-      if (addressNode == null || addressNode.isMissing()) continue;
-      String address = addressNode.getTokenValue();
+      String address = (addressNode == null || addressNode.isMissing()) ? null : addressNode.getTokenValue();
       if (address == null) continue;
       String[] split = split(address);
       ensureSize(result, split.length);

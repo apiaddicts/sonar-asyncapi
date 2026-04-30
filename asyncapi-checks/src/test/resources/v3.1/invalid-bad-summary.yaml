@@ -1,0 +1,30 @@
+asyncapi: "3.1.0"
+info:
+  title: API With Invalid Summary
+  version: 1.0.0
+  summary: this summary is lowercase and missing period
+
+channels:
+  userCreated:
+    address: user/created
+    messages:
+      userCreatedMessage:
+        payload:
+          type: object
+
+operations:
+  onUserCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: onUserCreated
+    summary: subscribe to user creation without period
+    message:
+      $ref: '#/channels/userCreated/messages/userCreatedMessage'
+
+  publishUserUpdated:
+    action: send
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: publishUserUpdated
+    summary: publish user update without proper format

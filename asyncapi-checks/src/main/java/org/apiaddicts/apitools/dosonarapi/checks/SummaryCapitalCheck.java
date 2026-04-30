@@ -73,11 +73,11 @@ public class SummaryCapitalCheck extends AsyncApiCheck {
         for (JsonNode operationNode : channelNode.propertyMap().values()) {
             if (operationNode.isObject()) {
                 JsonNode publishNode = operationNode.get("publish");
-                if (publishNode != null) {
+                if (publishNode != null && !publishNode.isMissing()) {
                     checkSummaryFormat(publishNode.get("summary"));
                 }
                 JsonNode subscribeNode = operationNode.get("subscribe");
-                if (subscribeNode != null) {
+                if (subscribeNode != null && !subscribeNode.isMissing()) {
                     checkSummaryFormat(subscribeNode.get("summary"));
                 }
             }

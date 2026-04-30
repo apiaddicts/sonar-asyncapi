@@ -1,0 +1,139 @@
+asyncapi: "3.1.0"
+info:
+  title: User Service API
+  version: 1.0.0
+  description: Complete AsyncAPI 3.1 example with all features.
+  contact:
+    name: API Support
+    email: support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  production:
+    host: broker.example.com
+    port: 1883
+    protocol: mqtt
+    description: Production MQTT broker
+    pathname: /mqtt
+
+  test:
+    host: test-broker.example.com
+    port: 1883
+    protocol: mqtt
+    description: Test MQTT broker
+    pathname: /mqtt
+
+defaultContentType: application/json
+
+channels:
+  userCreated:
+    address: user/created
+    description: Channel for user creation events.
+    messages:
+      userCreatedMessage:
+        name: userCreated
+        title: User Created Event
+        summary: Notification of a new user.
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+              description: User ID
+            email:
+              type: string
+              format: email
+            createdAt:
+              type: string
+              format: date-time
+
+  userUpdated:
+    address: user/updated
+    description: Channel for user update events.
+    messages:
+      userUpdatedMessage:
+        name: userUpdated
+        summary: Notification of a user update.
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+            email:
+              type: string
+            updatedAt:
+              type: string
+              format: date-time
+
+operations:
+  onUserCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: onUserCreated
+    summary: Subscribe to user creation events.
+    description: Receives user creation notifications.
+    tags:
+      - name: users
+        description: User operations
+    message:
+      $ref: '#/channels/userCreated/messages/userCreatedMessage'
+
+  publishUserUpdated:
+    action: send
+    channel:
+      $ref: '#/channels/userUpdated'
+    operationId: publishUserUpdated
+    summary: Publish user update events.
+    tags:
+      - name: users
+    message:
+      $ref: '#/channels/userUpdated/messages/userUpdatedMessage'
+
+  onUserDeleted:
+    action: receive
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: onUserDeleted
+    summary: Subscribe to user deletion events.
+    message:
+      payload:
+        type: object
+        properties:
+          userId:
+            type: string
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - email
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: api_key
+      in: header
+
+tags:
+  - name: users
+    description: User-related operations.
+    externalDocs:
+      url: https://example.com/docs/users
+
+externalDocs:
+  description: AsyncAPI documentation.
+  url: https://example.com/docs/asyncapi
+
+x-custom-extension: This is a custom extension

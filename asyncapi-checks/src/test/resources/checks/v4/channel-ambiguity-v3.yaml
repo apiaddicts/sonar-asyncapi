@@ -1,0 +1,56 @@
+asyncapi: '3.0.0'
+info:
+  title: Channel Ambiguity Check V3
+  version: 1.0.0
+
+channels:
+  pets:
+    address: pets
+    messages:
+      msg:
+        payload:
+          type: object
+  petById:
+    address: pets/{petId}
+    messages:
+      msg:
+        payload:
+          type: object
+  specificPet:
+    address: pets/1234
+    messages:
+      msg:
+        payload:
+          type: object
+  animalName:
+    address: animals/{animalId}/name
+    messages:
+      msg:
+        payload:
+          type: object
+
+operations:
+  onPets:
+    action: receive
+    channel:
+      $ref: '#/channels/pets'
+    message:
+      $ref: '#/channels/pets/messages/msg'
+  onPetById:
+    action: receive
+    channel:
+      $ref: '#/channels/petById'
+    message:
+      $ref: '#/channels/petById/messages/msg'
+  onSpecificPet:
+    action: receive
+    channel:
+      $ref: '#/channels/specificPet'
+    message:
+      $ref: '#/channels/specificPet/messages/msg'
+  onAnimalName:
+    action: receive
+    channel:
+      $ref: '#/channels/animalName'
+    message:
+      $ref: '#/channels/animalName/messages/msg'

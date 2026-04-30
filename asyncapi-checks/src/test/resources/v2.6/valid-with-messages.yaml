@@ -1,0 +1,70 @@
+asyncapi: "2.6.0"
+info:
+  title: API With Messages
+  version: 1.0.0
+
+channels:
+  user/created:
+    subscribe:
+      operationId: onUserCreated
+      summary: Subscribe to user creation events.
+      message:
+        name: userCreated
+        title: User Created
+        summary: Notification when a new user is created.
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+          required:
+            - userId
+            - email
+
+  order/placed:
+    publish:
+      operationId: publishOrderPlaced
+      summary: Publish when an order is placed.
+      message:
+        name: orderPlaced
+        title: Order Placed
+        summary: Notification when a new order is created.
+        payload:
+          type: object
+          properties:
+            orderId:
+              type: string
+            userId:
+              type: string
+            total:
+              type: number
+              format: double
+
+components:
+  messages:
+    userCreatedMsg:
+      name: userCreated
+      title: User Created
+      summary: User creation event.
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time

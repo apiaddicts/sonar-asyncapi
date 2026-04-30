@@ -1,0 +1,52 @@
+asyncapi: "3.1.0"
+info:
+  title: API With Servers
+  version: 1.0.0
+
+servers:
+  production:
+    host: broker.example.com
+    port: 1883
+    protocol: mqtt
+    description: Production MQTT broker
+    pathname: /mqtt
+
+  staging:
+    host: staging-broker.example.com
+    port: 1883
+    protocol: mqtt
+    description: Staging MQTT broker
+    pathname: /mqtt
+
+  rabbitmq:
+    host: rabbitmq.example.com
+    port: 5672
+    protocol: amqp
+    description: RabbitMQ AMQP broker
+
+  kafka:
+    host: kafka.example.com
+    port: 9092
+    protocol: kafka
+    description: Apache Kafka broker
+
+channels:
+  userCreated:
+    address: user/created
+    messages:
+      userCreatedMessage:
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+
+operations:
+  onUserCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: onUserCreated
+    summary: Subscribe to user creation events.
+    message:
+      $ref: '#/channels/userCreated/messages/userCreatedMessage'

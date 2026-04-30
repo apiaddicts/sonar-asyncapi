@@ -71,19 +71,54 @@ public class ChannelAmbiguityCheck extends AsyncApiCheck {
 
   @Override
   public void visitNode(JsonNode node) {
-    List<List<Bucket>> channelsByLength = sortChannelsByLength(node.propertyMap().values());
+    if (getContext().getVersion().isVersion3()) {
+      checkV3ChannelAmbiguity(node);
+    } else {
+      checkV2ChannelAmbiguity(node);
+    }
+  }
+
+  private void checkV2ChannelAmbiguity(JsonNode channelsNode) {
+    List<List<Bucket>> channelsByLength = sortChannelsByLength(channelsNode.propertyMap().values());
     for (List<Bucket> buckets : channelsByLength) {
       for (int i = 0; i < buckets.size() - 1; ++i) {
         for (int j = i + 1; j < buckets.size(); ++j) {
           ConflictMode mode = new ConflictChecker().check(buckets.get(i).channel, buckets.get(j).channel);
           if (mode != CLEAR) {
-            String message = AMBIGUOUS_MESSAGE;
-            PreciseIssue issue = addIssue(message, buckets.get(i).node);
-            issue.secondary(IssueLocation.preciseLocation(message, buckets.get(j).node));
+            PreciseIssue issue = addIssue(AMBIGUOUS_MESSAGE, buckets.get(i).node);
+            issue.secondary(IssueLocation.preciseLocation(AMBIGUOUS_MESSAGE, buckets.get(j).node));
           }
         }
       }
     }
+  }
+
+  private void checkV3ChannelAmbiguity(JsonNode channelsNode) {
+    List<List<Bucket>> channelsByLength = sortChannelsByAddressLength(channelsNode.propertyMap().values());
+    for (List<Bucket> buckets : channelsByLength) {
+      for (int i = 0; i < buckets.size() - 1; ++i) {
+        for (int j = i + 1; j < buckets.size(); ++j) {
+          ConflictMode mode = new ConflictChecker().check(buckets.get(i).channel, buckets.get(j).channel);
+          if (mode != CLEAR) {
+            PreciseIssue issue = addIssue(AMBIGUOUS_MESSAGE, buckets.get(i).node);
+            issue.secondary(IssueLocation.preciseLocation(AMBIGUOUS_MESSAGE, buckets.get(j).node));
+          }
+        }
+      }
+    }
+  }
+
+  private List<List<Bucket>> sortChannelsByAddressLength(Collection<JsonNode> channelProperties) {
+    ArrayList<List<Bucket>> result = new ArrayList<>();
+    for (JsonNode channelProperty : channelProperties) {
+      JsonNode addressNode = channelProperty.get("address");
+      String address = (addressNode == null || addressNode.isMissing()) ? null : addressNode.getTokenValue();
+      if (address == null) continue;
+      String[] split = split(address);
+      ensureSize(result, split.length);
+      result.get(split.length - 1).add(new Bucket(split, addressNode));
+    }
+    return result;
   }
 
   private List<List<Bucket>> sortChannelsByLength(Collection<JsonNode> properties) {

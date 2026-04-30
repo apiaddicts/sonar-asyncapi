@@ -1,0 +1,32 @@
+asyncapi: "3.1.0"
+info:
+  title: API With Invalid Server
+  version: 1.0.0
+
+servers:
+  production:
+    host: broker.example.com
+    port: 1883
+    description: Missing protocol
+
+  staging:
+    host: staging-broker.example.com
+    port: 1883
+    protocol: mqtt
+
+channels:
+  userCreated:
+    address: user/created
+    messages:
+      userCreatedMessage:
+        payload:
+          type: object
+
+operations:
+  onUserCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: onUserCreated
+    message:
+      $ref: '#/channels/userCreated/messages/userCreatedMessage'

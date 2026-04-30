@@ -51,9 +51,7 @@ public class TestAsyncApiVisitorRunner {
   }
 
   public static AsyncApiVisitorContext createContextWithComments(File file) {
-    AsyncApiConfiguration configuration = new AsyncApiConfiguration(StandardCharsets.UTF_8, true);
-    YamlParser parser = AsyncApiv4Parser.createV4(configuration);
-    return createContext(file, parser);
+    return createContext(file);
   }
 
   public static AsyncApiVisitorContext createContext(File file) {
@@ -67,10 +65,19 @@ public class TestAsyncApiVisitorRunner {
     try {
       String content = getContent(file);
       JsonNode rootTree = parser.parse(content);
-      return new AsyncApiVisitorContext(rootTree, parser.getIssues(), asyncApiFile);
+      AsyncApiVersion version = detectVersion(rootTree);
+      return new AsyncApiVisitorContext(rootTree, parser.getIssues(), asyncApiFile, version);
     } catch (IOException ex) {
       throw new IllegalStateException("Error reading file", ex);
     }
+  }
+
+  private static AsyncApiVersion detectVersion(JsonNode rootTree) {
+    JsonNode versionNode = rootTree.get("asyncapi");
+    if (versionNode == null || versionNode.isMissing()) return AsyncApiVersion.V2_X;
+    String version = versionNode.getTokenValue();
+    if (version != null && version.startsWith("3.")) return AsyncApiVersion.V3_X;
+    return AsyncApiVersion.V2_X;
   }
 
   private static String getContent(File file) throws IOException {

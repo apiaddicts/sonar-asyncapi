@@ -1,0 +1,20 @@
+asyncapi: "3.1.0"
+info:
+  title: Missing Channel Address
+  version: 1.0.0
+
+channels:
+  userCreated:
+    messages:
+      userCreatedMessage:
+        payload:
+          type: object
+
+operations:
+  onUserCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: onUserCreated
+    message:
+      $ref: '#/channels/userCreated/messages/userCreatedMessage'

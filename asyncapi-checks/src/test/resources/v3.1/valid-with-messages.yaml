@@ -1,0 +1,86 @@
+asyncapi: "3.1.0"
+info:
+  title: API With Messages
+  version: 1.0.0
+
+channels:
+  userCreated:
+    address: user/created
+    description: User creation events.
+    messages:
+      userCreatedMsg:
+        name: userCreated
+        title: User Created
+        summary: Notification when a new user is created.
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+          required:
+            - userId
+            - email
+
+  orderPlaced:
+    address: order/placed
+    messages:
+      orderPlacedMsg:
+        name: orderPlaced
+        title: Order Placed
+        summary: Notification when a new order is created.
+        payload:
+          type: object
+          properties:
+            orderId:
+              type: string
+            userId:
+              type: string
+            total:
+              type: number
+              format: double
+
+operations:
+  onUserCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/userCreated'
+    operationId: onUserCreated
+    summary: Subscribe to user creation events.
+    message:
+      $ref: '#/channels/userCreated/messages/userCreatedMsg'
+
+  publishOrderPlaced:
+    action: send
+    channel:
+      $ref: '#/channels/orderPlaced'
+    operationId: publishOrderPlaced
+    summary: Publish when an order is placed.
+    message:
+      $ref: '#/channels/orderPlaced/messages/orderPlacedMsg'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string
+        userId:
+          type: string
+        total:
+          type: number

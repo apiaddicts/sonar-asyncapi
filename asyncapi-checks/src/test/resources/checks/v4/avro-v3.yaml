@@ -1,0 +1,74 @@
+asyncapi: '3.0.0'
+info:
+  title: Avro Schema Test API
+  version: 1.0.0
+  description: Tests AsyncAPI 3.0 with Avro schemas via schemaFormat.
+
+servers:
+  production:
+    host: broker.example.com
+    port: 9092
+    protocol: kafka
+    description: Kafka broker for Avro messages.
+
+channels:
+  userSignedUp:
+    address: user.signed-up
+    description: Channel for user sign-up events using inline Avro schema.
+    messages:
+      userSignedUpMsg:
+        name: userSignedUp
+        title: User Signed Up.
+        summary: Notification when a user signs up using Avro payload.
+        payload:
+          schemaFormat: 'application/vnd.apache.avro;version=1.9.0'
+          schema:
+            type: record
+            name: UserSignedUp
+            namespace: com.example
+            doc: User sign-up information
+            fields:
+              - name: userId
+                type: int
+              - name: userEmail
+                type: string
+
+  orderCreated:
+    address: order.created
+    description: Channel for order creation events using schemaFormat in payload.
+    messages:
+      orderCreatedMsg:
+        name: orderCreated
+        title: Order Created.
+        summary: Notification when an order is created with Avro schema.
+        payload:
+          schemaFormat: 'application/vnd.apache.avro+json;version=1.9.0'
+          schema:
+            type: record
+            name: OrderCreated
+            namespace: com.example
+            doc: Order creation information
+            fields:
+              - name: orderId
+                type: string
+              - name: amount
+                type: double
+
+operations:
+  onUserSignedUp:
+    action: receive
+    channel:
+      $ref: '#/channels/userSignedUp'
+    operationId: onUserSignedUp
+    summary: Subscribe to user sign-up events.
+    message:
+      $ref: '#/channels/userSignedUp/messages/userSignedUpMsg'
+
+  publishOrderCreated:
+    action: send
+    channel:
+      $ref: '#/channels/orderCreated'
+    operationId: publishOrderCreated
+    summary: Publish order creation events.
+    message:
+      $ref: '#/channels/orderCreated/messages/orderCreatedMsg'

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiCheck;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiFile;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVersion;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVisitorContext;
 import org.apiaddicts.apitools.dosonarapi.api.IssueLocation;
 import org.apiaddicts.apitools.dosonarapi.api.PreciseIssue;
@@ -115,18 +116,17 @@ public class AsyncApiAnalyzer {
         try {
           String content = getContent(inputFile);
           if (!content.contains("asyncapi")) return;
-          JsonNode rootNode = AsyncApiParser.createAsyncApi(configuration).parse(content);
-          boolean isV4 = !rootNode.at("/asyncapi").isMissing();
-          JsonNode asyncapiNode = rootNode.at("/asyncapi");
-          
-          YamlParser targetParser = null;
-          if (isV4) targetParser = AsyncApiParser.createAsyncApi(configuration);
-          if (targetParser == null) return;
-    
-          visitorContext = new AsyncApiVisitorContext(targetParser.parse(content), targetParser.getIssues(), asyncApiFile);
+
+          AsyncApiVersion version = detectAsyncApiVersion(content);
+          if (version == null) {
+            LOG.warn("Unable to detect AsyncAPI version in file: " + inputFile.filename());
+            return;
+          }
+
+          YamlParser parser = AsyncApiParser.createAsyncApi(configuration);
+          visitorContext = new AsyncApiVisitorContext(parser.parse(content), parser.getIssues(), asyncApiFile, version);
           saveMeasures(inputFile, visitorContext);
         } catch (ValidationException e) {
-          visitorContext = new AsyncApiVisitorContext(asyncApiFile, e);
           LOG.error("Error during file validation: " + inputFile.filename() + "\"\n" + e.formatMessage());
           for (ValidationException cause : e.getCauses()) {
             dumpException(cause, inputFile);
@@ -143,9 +143,35 @@ public class AsyncApiAnalyzer {
           LOG.error("Unable to parse file in i/o: " + inputFile.filename() + "\"\n" + ex.getMessage());
           dumpException(re, inputFile);
         }
-    
+
         for (AsyncApiCheck check : checks.all()) {
           saveIssues(inputFile, check, check.scanFileForIssues(visitorContext));
+        }
+      }
+
+      private AsyncApiVersion detectAsyncApiVersion(String content) {
+        try {
+          YamlParser genericParser = AsyncApiParser.createGeneric(configuration);
+          JsonNode root = genericParser.parse(content);
+          JsonNode versionNode = root.get("asyncapi");
+
+          if (versionNode == null || versionNode.isMissing()) {
+            return null;
+          }
+
+          String version = versionNode.getTokenValue();
+          if (version == null) return null;
+
+          if (version.startsWith("3.")) {
+            return AsyncApiVersion.V3_X;
+          } else if (version.startsWith("2.")) {
+            return AsyncApiVersion.V2_X;
+          }
+
+          return null;
+        } catch (Exception e) {
+          LOG.debug("Error detecting AsyncAPI version: " + e.getMessage());
+          return null;
         }
       }
 
@@ -154,7 +180,6 @@ public class AsyncApiAnalyzer {
      * sometimes, when an empty line is followed by a comment, it breaks the parser,
      * it also replaces tabs by spaces to avoid another parsing error
      *
-     * FIXME: Try to solve in the yaml parser lib
      */
     private String getContent(InputFile inputFile) throws IOException {
         String [] lines = inputFile.contents().split("\n");

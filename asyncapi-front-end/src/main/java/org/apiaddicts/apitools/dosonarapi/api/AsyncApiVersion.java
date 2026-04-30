@@ -17,24 +17,27 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.apiaddicts.apitools.dosonarapi.checks;
+package org.apiaddicts.apitools.dosonarapi.api;
 
-import org.junit.Test;
-import org.apiaddicts.apitools.dosonarapi.AsyncApiCheckVerifier;
+public enum AsyncApiVersion {
+  V2_X("2.x"),
+  V3_X("3.x");
 
-public class SummaryCapitalCheckTest {
-  @Test
-  public void verify_summary_capital_in_v4() {
-    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/summary-capital.yaml", new SummaryCapitalCheck());
+  private final String label;
+
+  AsyncApiVersion(String label) {
+    this.label = label;
   }
 
-  @Test
-  public void verify_summary_capital_in_v3() {
-    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/summary-capital-v3.yaml", new SummaryCapitalCheck());
+  public String getLabel() {
+    return label;
   }
 
-  @Test
-  public void verify_no_false_positives_on_avro_v3() {
-    AsyncApiCheckVerifier.verify("src/test/resources/checks/v4/avro-v3.yaml", new SummaryCapitalCheck());
+  public boolean isVersion2() {
+    return this == V2_X;
+  }
+
+  public boolean isVersion3() {
+    return this == V3_X;
   }
 }

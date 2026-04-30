@@ -1,0 +1,35 @@
+asyncapi: "2.6.0"
+info:
+  title: API With Servers
+  version: 1.0.0
+
+servers:
+  - url: mqtt://broker.example.com:1883
+    protocol: mqtt
+    description: Production MQTT broker
+    variables:
+      port:
+        default: "1883"
+
+  - url: amqp://rabbitmq.example.com:5672
+    protocol: amqp
+    description: Production AMQP broker
+
+  - url: kafka://kafka.example.com:9092
+    protocol: kafka
+    description: Production Kafka broker
+
+channels:
+  user/created:
+    description: User creation events
+    subscribe:
+      operationId: onUserCreated
+      summary: Subscribe to user creation events.
+      message:
+        payload:
+          type: object
+          properties:
+            userId:
+              type: string
+            email:
+              type: string

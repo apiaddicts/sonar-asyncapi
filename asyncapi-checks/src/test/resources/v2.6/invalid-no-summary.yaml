@@ -1,0 +1,12 @@
+asyncapi: "2.6.0"
+info:
+  title: API Without Summary
+  version: 1.0.0
+
+channels:
+  user/created:
+    subscribe:
+      operationId: onUserCreated
+      message:
+        payload:
+          type: object

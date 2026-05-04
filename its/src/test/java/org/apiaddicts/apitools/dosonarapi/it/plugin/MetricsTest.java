@@ -25,7 +25,7 @@ import java.io.File;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.sonarqube.ws.WsMeasures.Measure;
+import org.sonarqube.ws.Measures.Measure;
 
 import static org.apiaddicts.apitools.dosonarapi.it.plugin.Tests.getMeasure;
 import static org.apiaddicts.apitools.dosonarapi.it.plugin.Tests.getMeasureAsDouble;

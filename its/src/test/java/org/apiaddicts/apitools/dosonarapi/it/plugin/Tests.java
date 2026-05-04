@@ -20,6 +20,8 @@
 package org.apiaddicts.apitools.dosonarapi.it.plugin;
 
 import com.sonar.orchestrator.Orchestrator;
+import com.sonar.orchestrator.config.Configuration;
+import com.sonar.orchestrator.container.SonarDistribution;
 import com.sonar.orchestrator.locator.FileLocation;
 import java.io.File;
 import java.util.ArrayList;
@@ -33,12 +35,12 @@ import javax.annotation.Nullable;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.sonarqube.ws.WsMeasures;
-import org.sonarqube.ws.WsMeasures.Measure;
+import org.sonarqube.ws.Measures;
+import org.sonarqube.ws.Measures.Measure;
 import org.sonarqube.ws.client.HttpConnector;
 import org.sonarqube.ws.client.WsClient;
 import org.sonarqube.ws.client.WsClientFactories;
-import org.sonarqube.ws.client.measure.ComponentWsRequest;
+import org.sonarqube.ws.client.measures.ComponentRequest;
 
 import static com.sonar.orchestrator.container.Server.ADMIN_LOGIN;
 import static com.sonar.orchestrator.container.Server.ADMIN_PASSWORD;
@@ -55,11 +57,13 @@ public class Tests {
   public static final FileLocation PLUGIN_LOCATION = FileLocation.byWildcardMavenFilename(new File("../sonar-asyncapi-plugin/target"), "sonar-asyncapi-plugin-*.jar");
 
   @ClassRule
-  public static Orchestrator ORCHESTRATOR = Orchestrator.builderEnv()
-      .setSonarVersion("6.7")
-      .addPlugin(PLUGIN_LOCATION)
-      .restoreProfileAtStartup(FileLocation.of("profiles/two_rules.xml"))
-      .build();
+  public static Orchestrator ORCHESTRATOR = new Orchestrator(
+      Configuration.createEnv(),
+      new SonarDistribution()
+          .setVersion("6.7")
+          .addPluginLocation(PLUGIN_LOCATION)
+          .restoreProfileAtStartup(FileLocation.of("profiles/two_rules.xml")),
+      null);
 
   public static Integer getProjectMeasure(String projectKey, String metricKey) {
     return getMeasureAsInt(projectKey, metricKey);
@@ -86,8 +90,8 @@ public class Tests {
 
   @CheckForNull
   private static List<Measure> getMeasures(String componentKey, List<String> metricKeys) {
-    WsMeasures.ComponentWsResponse response = newWsClient().measures().component(new ComponentWsRequest()
-        .setComponentKey(componentKey)
+    Measures.ComponentWsResponse response = newWsClient().measures().component(new ComponentRequest()
+        .setComponent(componentKey)
         .setMetricKeys(metricKeys));
     return response.getComponent().getMeasuresList();
   }
@@ -118,6 +122,5 @@ public class Tests {
         .credentials(login, password)
         .build());
   }
-
 
 }

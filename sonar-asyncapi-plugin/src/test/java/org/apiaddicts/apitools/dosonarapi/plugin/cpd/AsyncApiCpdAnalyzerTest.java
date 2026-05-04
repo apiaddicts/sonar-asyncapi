@@ -32,7 +32,6 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.duplications.internal.pmd.TokensLine;
 import org.apiaddicts.apitools.dosonarapi.api.AsyncApiVisitorContext;
 import org.apiaddicts.apitools.dosonarapi.api.TestAsyncApiVisitorRunner;
 
@@ -51,14 +50,14 @@ public class AsyncApiCpdAnalyzerTest {
     AsyncApiVisitorContext visitorContext = TestAsyncApiVisitorRunner.createContext(inputFile.path().toFile());
     cpdAnalyzer.pushCpdTokens(inputFile, visitorContext);
 
-    List<TokensLine> lines = context.cpdTokens("moduleKey:cpd.yaml");
+    var lines = context.cpdTokens("moduleKey:cpd.yaml");
     assertThat(lines).hasSize(9);
-    TokensLine line1 = lines.get(0);
+    var line1 = lines.get(0);
     assertThat(line1.getStartLine()).isEqualTo(1);
     assertThat(line1.getEndLine()).isEqualTo(1);
     assertThat(line1.getStartUnit()).isEqualTo(1);
     assertThat(line1.getEndUnit()).isEqualTo(3);
-    List<String> values = lines.stream().map(TokensLine::getValue).collect(Collectors.toList());
+    List<String> values = lines.stream().map(tl -> tl.getValue()).collect(Collectors.toList());
     assertThat(values).containsExactly(
         "asyncapi:2.0.0",
         "info:",

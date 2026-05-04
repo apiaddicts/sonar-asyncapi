@@ -42,6 +42,7 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.ActiveRules;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
+import org.sonar.api.batch.rule.internal.NewActiveRule;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.issue.NoSonarFilter;
@@ -76,9 +77,10 @@ public class AsyncApiScannerSensorTest {
 
   @Test
   public void test_issues_asyncapi() {
-    activeRules = (new ActiveRulesBuilder())
-        .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, "ChannelAmbiguity"))
-        .activate()
+    activeRules = new ActiveRulesBuilder()
+        .addRule(new NewActiveRule.Builder()
+            .setRuleKey(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, "ChannelAmbiguity"))
+            .build())
         .build();
 
     inputFile("file1.yaml");
@@ -100,10 +102,11 @@ public class AsyncApiScannerSensorTest {
   @Test
   public void parse_error() {
     inputFile("parse-error.yaml");
-    activeRules = (new ActiveRulesBuilder())
-      .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
-      .activate()
-      .build();
+    activeRules = new ActiveRulesBuilder()
+        .addRule(new NewActiveRule.Builder()
+            .setRuleKey(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
+            .build())
+        .build();
     // sensor().execute(context);
     // assertThat(context.allIssues()).hasSize(1);
     // assertThat(context.allAnalysisErrors())
@@ -119,9 +122,10 @@ public class AsyncApiScannerSensorTest {
   @Test
   public void parse_yaml_break_comment_ok() {
     inputFile("parse-yaml.yaml");
-    activeRules = (new ActiveRulesBuilder())
-            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
-            .activate()
+    activeRules = new ActiveRulesBuilder()
+            .addRule(new NewActiveRule.Builder()
+                .setRuleKey(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
+                .build())
             .build();
     sensor().execute(context);
     assertThat(context.allIssues()).hasSize(0);
@@ -131,9 +135,10 @@ public class AsyncApiScannerSensorTest {
   @Test
   public void parse_yaml_tabs_ok() {
     inputFile("parse-error-tabs.json");
-    activeRules = (new ActiveRulesBuilder())
-            .create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
-            .activate()
+    activeRules = new ActiveRulesBuilder()
+            .addRule(new NewActiveRule.Builder()
+                .setRuleKey(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
+                .build())
             .build();
     sensor().execute(context);
     assertThat(context.allIssues()).hasSize(0);
@@ -147,8 +152,11 @@ public class AsyncApiScannerSensorTest {
     for (String file: files) {
       context = SensorContextTester.create(baseDir);
       inputFile(file);
-      activeRules = (new ActiveRulesBuilder()).create(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
-              .activate().build();
+      activeRules = new ActiveRulesBuilder()
+              .addRule(new NewActiveRule.Builder()
+                  .setRuleKey(RuleKey.of(AsyncApiCheckList.REPOSITORY_KEY, ParsingErrorCheck.CHECK_KEY))
+                  .build())
+              .build();
       sensor().execute(context);
       if (!context.allIssues().isEmpty() || !context.allAnalysisErrors().isEmpty()) errorFiles.add(file);
     }
@@ -169,7 +177,7 @@ public class AsyncApiScannerSensorTest {
     FileLinesContextFactory fileLinesContextFactory = mock(FileLinesContextFactory.class);
     FileLinesContext fileLinesContext = mock(FileLinesContext.class);
     when(fileLinesContextFactory.createFor(Mockito.any(InputFile.class))).thenReturn(fileLinesContext);
-    return new AsyncApiScannerSensor(checkFactory, fileLinesContextFactory, new NoSonarFilter());
+    return new AsyncApiScannerSensor(checkFactory, fileLinesContextFactory, mock(NoSonarFilter.class));
   }
 
   private InputFile inputFile(String name) {

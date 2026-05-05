@@ -57,7 +57,7 @@ public class Tests {
   public static final FileLocation PLUGIN_LOCATION = FileLocation.byWildcardMavenFilename(new File("../sonar-asyncapi-plugin/target"), "sonar-asyncapi-plugin-*.jar");
 
   @ClassRule
-  public static Orchestrator ORCHESTRATOR = new Orchestrator(
+  public static Orchestrator orchestrator = new Orchestrator(
       Configuration.createEnv(),
       new SonarDistribution()
           .setVersion("6.7")
@@ -118,7 +118,7 @@ public class Tests {
 
   protected static WsClient newWsClient(@Nullable String login, @Nullable String password) {
     return WsClientFactories.getDefault().newClient(HttpConnector.newBuilder()
-        .url(ORCHESTRATOR.getServer().getUrl())
+        .url(orchestrator.getServer().getUrl())
         .credentials(login, password)
         .build());
   }

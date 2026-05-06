@@ -50,7 +50,7 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.utils.log.LogTester;
+import org.sonar.api.testfixtures.log.LogTester;
 
 public class AsyncApiScannerSensorTest {
   private final Path baseDir = Paths.get("src/test/resources/sensor").toAbsolutePath();

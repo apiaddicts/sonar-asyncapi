@@ -57,7 +57,7 @@ public class AsyncApiCpdAnalyzerTest {
     assertThat(line1.getEndLine()).isEqualTo(1);
     assertThat(line1.getStartUnit()).isEqualTo(1);
     assertThat(line1.getEndUnit()).isEqualTo(3);
-    List<String> values = lines.stream().map(tl -> tl.getValue()).collect(Collectors.toList());
+    List<String> values = lines.stream().map(tl -> tl.getValue()).toList();
     assertThat(values).containsExactly(
         "asyncapi:2.0.0",
         "info:",

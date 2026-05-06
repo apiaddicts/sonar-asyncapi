@@ -37,7 +37,7 @@ public class MetricsTest {
   private static final String PROJECT_KEY = "metrics";
 
   @ClassRule
-  public static Orchestrator orchestrator = Tests.ORCHESTRATOR;
+  public static Orchestrator orchestrator = Tests.orchestrator;
 
   @BeforeClass
   public static void startServer() {

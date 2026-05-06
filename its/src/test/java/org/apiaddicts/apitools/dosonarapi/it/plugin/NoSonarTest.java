@@ -33,7 +33,7 @@ public class NoSonarTest {
   private static final String PROJECT_KEY = "nosonar";
 
   @ClassRule
-  public static Orchestrator orchestrator = Tests.ORCHESTRATOR;
+  public static Orchestrator orchestrator = Tests.orchestrator;
 
   @BeforeClass
   public static void startServer() {

@@ -32,7 +32,7 @@ Feel free to drop by and greet us on our GitHub discussion or Discord chat. You 
 
 ## ⚙️ Features
 
-* Full compatibility with AsyncAPI v2.0.0, v2.1.0, v2.2.0, v2.3.0, v2.4.0, 2.5.0 and 2.6.0
+* Full compatibility with AsyncAPI v2.0.0, v2.1.0, v2.2.0, v2.3.0, v2.4.0, 2.5.0, 2.6.0, 3.0.0 and 3.1.0
 
 <a name="install"></a>
 ## Installing

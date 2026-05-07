@@ -19,9 +19,10 @@
  */
 package org.apiaddicts.apitools.dosonarapi.plugin;
 
+import org.sonar.api.SonarRuntime;
 import org.sonar.api.server.rule.RulesDefinition;
-import org.apiaddicts.apitools.dosonarapi.checks.AsyncApiCheckList; 
-import org.apiaddicts.apitools.dosonarapi.api.AsyncApiCustomRuleRepository; 
+import org.apiaddicts.apitools.dosonarapi.checks.AsyncApiCheckList;
+import org.apiaddicts.apitools.dosonarapi.api.AsyncApiCustomRuleRepository;
 import org.sonarsource.analyzer.commons.RuleMetadataLoader;
 
 import java.util.HashSet;
@@ -30,11 +31,17 @@ import java.util.Set;
 
 public class AsyncApiRulesDefinition implements RulesDefinition, AsyncApiCustomRuleRepository {
   private static final String REPOSITORY_NAME = "SonarAnalyzer for AsyncAPI";
-  private static final String RESOURCE_FOLDER = "org.sonar/l10n/asyncapi/rules/asyncapi"; 
-  private static final Set<String> TEMPLATE_RULE_KEYS = new HashSet<>(); 
+  private static final String RESOURCE_FOLDER = "org.sonar/l10n/asyncapi/rules/asyncapi";
+  private static final Set<String> TEMPLATE_RULE_KEYS = new HashSet<>();
 
-  private static RuleMetadataLoader getRuleMetadataLoader() {
-    return new RuleMetadataLoader(RESOURCE_FOLDER);
+  private final SonarRuntime sonarRuntime;
+
+  public AsyncApiRulesDefinition(SonarRuntime sonarRuntime) {
+    this.sonarRuntime = sonarRuntime;
+  }
+
+  private RuleMetadataLoader getRuleMetadataLoader() {
+    return new RuleMetadataLoader(RESOURCE_FOLDER, sonarRuntime);
   }
 
   @Override

@@ -402,6 +402,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("messageId", b.anything()),
       b.property("location", b.string()),
       b.property("contentType", b.string()),
+      b.property("schemaFormat", b.string()),
       b.property("headers", b.firstOf(REF, SCHEMA)),
       b.property("payload", PAYLOAD_SCHEMA),
       b.property("correlationId", b.firstOf(REF, b.object(
@@ -444,9 +445,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("required", b.array(b.string())),
       b.property("enum", b.array(b.anything())),
       b.property("const", b.anything()),
-      b.property("type", b.firstOf(
-        b.firstOf("object", "string", "number", "integer", "boolean", "array", "null"),
-        b.array(b.firstOf("object", "string", "number", "integer", "boolean", "array", "null")))),
+      b.property("type", b.firstOf(b.string(), b.array(b.string()))),
       b.property("allOf", b.array(b.firstOf(REF, SCHEMA))),
       b.property("oneOf", b.array(b.firstOf(REF, SCHEMA))),
       b.property("anyOf", b.array(b.firstOf(REF, SCHEMA))),

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Major**: Upgraded core dependencies and plugins to latest stable versions.
+- Added `schemaFormat` as a valid property of the Message Object.
 
 ## [1.2.0] - 2026-04-30
 

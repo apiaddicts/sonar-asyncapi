@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.apiaddicts.apitools.dosonarapi</groupId>
     <artifactId>dosonarapi-asyncapi</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -23,7 +23,7 @@
       <artifactId>sslr-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.sonarsource.sonarqube</groupId>
+      <groupId>org.sonarsource.api.plugin</groupId>
       <artifactId>sonar-plugin-api</artifactId>
     </dependency>
     <dependency>

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-06-09
+
+### Changed
+- Lowered the Sonar Plugin API baseline from `13.5.0.4319` to `11.1.0.2693` to broaden SonarQube compatibility. The plugin now loads on SonarQube Server 2025.1.x LTA (Plugin API 11.x) as well as newer Community Build releases (e.g. 25.9, Plugin API 13.x).
+- Aligned the test-scoped `sonar-plugin-api-impl` to `25.2.0.102705` to match the new API baseline.
+
 ## [2.0.0] - 2026-05-06
 
 ### Added

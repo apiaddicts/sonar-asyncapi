@@ -140,6 +140,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
 
   private static void buildTags(YamlGrammarBuilder b) {
     b.rule(TAG).is(b.firstOf(
+      REF,
       b.string(),
       b.object(
         b.property("name", b.string()),
@@ -168,6 +169,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.discriminant("type", "oauth2"),
       b.property("description", DESCRIPTION),
       b.mandatoryProperty("flows", FLOWS),
+      b.property("scopes", b.array(b.string())),
       b.patternProperty(EXTENSION_PATTERN, b.anything()))).skip();
     b.rule(OPENID_SECURITY_SCHEME).is(b.object(
       b.discriminant("type", "openIdConnect"),
@@ -183,26 +185,34 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
     b.rule(IMPLICIT_FLOW).is(b.object(
       b.mandatoryProperty("authorizationUrl", b.string()),
       b.property("refreshUrl", b.string()),
-      b.mandatoryProperty("scopes", b.object(
+      b.property("scopes", b.object(
+        b.patternProperty(".*", b.string()))),
+      b.property("availableScopes", b.object(
         b.patternProperty(".*", b.string()))),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
     b.rule(PASSWORD_FLOW).is(b.object(
       b.mandatoryProperty("tokenUrl", b.string()),
       b.property("refreshUrl", b.string()),
-      b.mandatoryProperty("scopes", b.object(
+      b.property("scopes", b.object(
+        b.patternProperty(".*", b.string()))),
+      b.property("availableScopes", b.object(
         b.patternProperty(".*", b.string()))),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
     b.rule(CREDENTIALS_FLOW).is(b.object(
       b.mandatoryProperty("tokenUrl", b.string()),
       b.property("refreshUrl", b.string()),
-      b.mandatoryProperty("scopes", b.object(
+      b.property("scopes", b.object(
+        b.patternProperty(".*", b.string()))),
+      b.property("availableScopes", b.object(
         b.patternProperty(".*", b.string()))),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
     b.rule(AUTH_FLOW).is(b.object(
       b.mandatoryProperty("authorizationUrl", b.string()),
       b.mandatoryProperty("tokenUrl", b.string()),
       b.property("refreshUrl", b.string()),
-      b.mandatoryProperty("scopes", b.object(
+      b.property("scopes", b.object(
+        b.patternProperty(".*", b.string()))),
+      b.property("availableScopes", b.object(
         b.patternProperty(".*", b.string()))),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
     b.rule(SECURITY_REQUIREMENT).is(b.object(
@@ -518,8 +528,8 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
 
     b.rule(SERVERS).is(
       b.firstOf(
-        b.array(SERVER),
-        b.object(b.patternProperty(".*", SERVER))));
+        b.array(b.firstOf(REF, SERVER)),
+        b.object(b.patternProperty(".*", b.firstOf(REF, SERVER)))));
   }
 
   // Info

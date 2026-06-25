@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2] - 2026-06-24
+
+### Fixed
+- Allow `$ref` in root-level servers; previously caused `Unexpected property: "$ref"` and `Missing required properties: [protocol]`.
+- Allow `$ref` in tag entries (root, `info`, servers, channels, operations); previously caused `Unexpected property: "$ref"`.
+- Accept `availableScopes` inside OAuth2 flows (AsyncAPI 3.0 rename of `scopes`); previously rejected as unexpected.
+- Make `scopes` optional in OAuth2 flows for 3.0 compatibility; previously required, causing false `Missing required properties: [scopes]` errors.
+- Accept `scopes` at the `oauth2` security-scheme level (valid in AsyncAPI 3.0); previously rejected as unexpected.
+
 ## [2.0.1] - 2026-06-09
 
 ### Changed

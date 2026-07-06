@@ -55,6 +55,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
   API_KEY_SECURITY_SCHEME,
   OAUTH2_SECURITY_SCHEME,
   OPENID_SECURITY_SCHEME,
+  NATIVE_SECURITY_SCHEME,
   MEDIA_TYPE,
   ENCODING,
   FLOWS,
@@ -152,7 +153,11 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
   // Security Definitions
   private static void buildSecurityDefinitions(YamlGrammarBuilder b) {
     b.rule(SECURITY_SCHEME).is(
-      b.firstOf(HTTP_SECURITY_SCHEME, API_KEY_SECURITY_SCHEME, OAUTH2_SECURITY_SCHEME, OPENID_SECURITY_SCHEME));
+      b.firstOf(HTTP_SECURITY_SCHEME, API_KEY_SECURITY_SCHEME, OAUTH2_SECURITY_SCHEME, OPENID_SECURITY_SCHEME, NATIVE_SECURITY_SCHEME));
+    b.rule(NATIVE_SECURITY_SCHEME).is(b.object(
+      b.mandatoryProperty("type", b.string()),
+      b.property("description", DESCRIPTION),
+      b.patternProperty(EXTENSION_PATTERN, b.anything()))).skip();
     b.rule(HTTP_SECURITY_SCHEME).is(b.object(
       b.discriminant("type", "http"),
       b.property("description", DESCRIPTION),

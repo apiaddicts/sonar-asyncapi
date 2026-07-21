@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.2-beta-3] - 2026-07-21
+
+### Fixed
+- Accept the `oneOf` wrapper (`message: { oneOf: [...] }`) on an Operation's `message` property in AsyncAPI 2.x; previously caused `Unexpected property: "oneOf"`.
+
 ## [2.0.2-beta-2] - 2026-07-06
 
 ### Fixed

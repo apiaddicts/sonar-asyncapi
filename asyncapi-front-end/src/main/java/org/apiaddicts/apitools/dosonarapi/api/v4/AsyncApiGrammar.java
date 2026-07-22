@@ -277,7 +277,7 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
       b.property("security", b.array(b.anything())),
       b.property("tags", b.array(TAG)),
       b.property("externalDocs", EXTERNAL_DOC),
-      b.property("message", b.firstOf(REF, MESSAGE)),
+      b.property("message", b.firstOf(REF, MESSAGES, MESSAGE)),
       b.property("messages", b.array(b.firstOf(REF, b.anything()))),
       b.property("reply", b.firstOf(REF, OPERATION_REPLY)),
       b.property("traits", b.array(b.firstOf(REF, OPERATION_TRAIT))),
@@ -438,6 +438,9 @@ public enum AsyncApiGrammar implements GrammarRuleKey {
           b.property("payload", b.object(
             b.patternProperty(".*", b.anything())))))),
       b.patternProperty(EXTENSION_PATTERN, b.anything())));
+
+    b.rule(MESSAGES).is(b.object(
+      b.mandatoryProperty("oneOf", b.array(b.firstOf(REF, MESSAGE)))));
   }
 
   // Schema

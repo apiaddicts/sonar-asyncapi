@@ -1,0 +1,5 @@
+operationId: userSignedUp
+message:
+  oneOf:
+    - $ref: '#/components/messages/Foo'
+    - $ref: '#/components/messages/Bar'

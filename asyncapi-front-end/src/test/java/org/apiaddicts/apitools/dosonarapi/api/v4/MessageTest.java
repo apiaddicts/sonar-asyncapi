@@ -42,4 +42,12 @@ public class MessageTest extends BaseNodeTest<AsyncApiGrammar> {
     assertEquals("./userSchema.json", node, "/schema/$ref");
     assertThat(issues).isEmpty();
   }
+
+  @Test
+  public void can_parse_message_oneof_wrapper() {
+    JsonNode node = parseResource(AsyncApiGrammar.OPERATION, "/models/v4/messageOneOf.yaml");
+    assertEquals("#/components/messages/Foo", node, "/message/oneOf/0/$ref");
+    assertEquals("#/components/messages/Bar", node, "/message/oneOf/1/$ref");
+    assertThat(issues).isEmpty();
+  }
 }

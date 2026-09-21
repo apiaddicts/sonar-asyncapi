@@ -77,8 +77,12 @@ public abstract class VersionAwareAsyncApiCheck extends AsyncApiCheck {
   }
 
   protected void visitServersV2(JsonNode serversNode) {
-    if (serversNode.isObject()) {
+    if (serversNode.isArray()) {
       for (JsonNode server : serversNode.elements()) {
+        visitServerV2(server);
+      }
+    } else if (serversNode.isObject()) {
+      for (JsonNode server : serversNode.propertyMap().values()) {
         visitServerV2(server);
       }
     }

@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [2.0.2] - 2026-09-20
+
+### Fixed
+- Allow `$ref` in root-level servers; previously caused `Unexpected property: "$ref"` and `Missing required properties: [protocol]`.
+- Allow `$ref` in tag entries (root, `info`, servers, channels, operations); previously caused `Unexpected property: "$ref"`.
+- Accept `availableScopes` inside OAuth2 flows (AsyncAPI 3.0 rename of `scopes`); previously rejected as unexpected.
+- Make `scopes` optional in OAuth2 flows for 3.0 compatibility; previously required, causing false `Missing required properties: [scopes]` errors.
+- Accept `scopes` at the `oauth2` security-scheme level (valid in AsyncAPI 3.0); previously rejected as unexpected.
+- Accept AsyncAPI-native security scheme types (`scramSha256`, `scramSha512`, `userPassword`, `X509`, `symmetricEncryption`, `asymmetricEncryption`, `plain`, `gssapi`, `httpApiKey`); previously caused validation failure for any type outside `http`, `apiKey`, `oauth2`, `openIdConnect`.
+- Fix `visitServersV2` in `VersionAwareAsyncApiCheck` to iterate map-form servers correctly.
+- Accept the `oneOf` wrapper (`message: { oneOf: [...] }`) on an Operation's `message` property in AsyncAPI 2.x; previously caused `Unexpected property: "oneOf"`.
+
+## [2.0.2-beta-3] - 2026-07-21
+
+### Fixed
+- Accept the `oneOf` wrapper (`message: { oneOf: [...] }`) on an Operation's `message` property in AsyncAPI 2.x; previously caused `Unexpected property: "oneOf"`.
+
+## [2.0.2-beta-2] - 2026-07-06
+
+### Fixed
+- Accept AsyncAPI-native security scheme types (`scramSha256`, `scramSha512`, `userPassword`, `X509`, `symmetricEncryption`, `asymmetricEncryption`, `plain`, `gssapi`, `httpApiKey`); previously caused validation failure for any type outside `http`, `apiKey`, `oauth2`, `openIdConnect`.
+- Fix `visitServersV2` in `VersionAwareAsyncApiCheck` to iterate map-form servers correctly.
+
+## [2.0.2-beta-1] - 2026-06-25
+
+### Fixed
+- Allow `$ref` in root-level servers; previously caused `Unexpected property: "$ref"` and `Missing required properties: [protocol]`.
+- Allow `$ref` in tag entries (root, `info`, servers, channels, operations); previously caused `Unexpected property: "$ref"`.
+- Accept `availableScopes` inside OAuth2 flows (AsyncAPI 3.0 rename of `scopes`); previously rejected as unexpected.
+- Make `scopes` optional in OAuth2 flows for 3.0 compatibility; previously required, causing false `Missing required properties: [scopes]` errors.
+- Accept `scopes` at the `oauth2` security-scheme level (valid in AsyncAPI 3.0); previously rejected as unexpected.
+
 ## [2.0.1] - 2026-06-09
 
 ### Changed
